@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status: 用来指定log4j本身的打印日志的级别 -->
+<!-- monitorInterval:用于指定log4j自动重新配置的监测间隔时间，单位是s,最小是5s. -->
+<configuration monitorInterval="60">
+	<!-- 定义变量 -->
+	<properties>
+		<!-- 配置日志文件输出目录，此配置将日志输出到tomcat根目录下的指定文件夹 -->
+		<property name="LOG_HOME">${sys:catalina.home}\logs</property>
+		<!-- 控制台输出格式 -->
+		<property name="LOG_FORMAT_CONSOLE">%d{HH:mm:ss.SSS} [%-5level] %msg%xEx%n</property>
+		<!-- 日志文件输出格式 -->
+		<property name="LOG_FORMAT">%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %msg%xEx%n</property>
+	</properties>
+	<!--先定义所有的appender -->
+	<appenders>
+		<!--用来定义输出到控制台的Appender -->
+		<Console name="console" target="SYSTEM_OUT">
+			<!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+			<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+			<!-- 输出的日志格式 -->
+			<PatternLayout pattern="${LOG_FORMAT_CONSOLE}" />
+		</Console>
+		<!-- RollingFile节点用来定义超过指定大小自动删除旧的创建新的的Appender -->
+		<!-- append:默认为true，记录追加到文件的最后，否则就先清除以前的记录再写入 -->
+		<!-- fileName:指定输出日志的目的文件带全路径的文件名; -->
+		<!-- filePattern: 指定新建日志文件的名称格式;压缩日志文件的文件名的模式。该模式的格式取决于所使用的RolloverPolicy -->
+		<!-- append为TRUE表示消息增加到指定文件中，false表示消息覆盖指定的文件内容，默认值是true -->
+		<!-- immediateFlush: 默认为true，每次写入都会执行flush。这可以保证每次数据都被写入磁盘，但是会影响性能。 -->
+		<RollingFile name="info" fileName="${LOG_HOME}\info.log" filePattern="${LOG_HOME}/info-%d{yyyy-MM-dd}-%i.log.gz"
+			immediateFlush="true">
+			<!-- 只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+			<!-- 输出的日志格式 -->
+			<PatternLayout pattern="${LOG_FORMAT}" />
+			<!-- Policies:指定滚动日志的策略，就是什么时候进行新建日志文件输出日志 -->
+			<Policies>
+				<!-- TimeBasedTriggeringPolicy: 基于时间的滚动策略，包含属性，interval:用来指定多久滚动一次，默认是1 hour; -->
+				<TimeBasedTriggeringPolicy />
+				<!-- SizeBasedTriggeringPolicy: 基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小. -->
+				<SizeBasedTriggeringPolicy size="20 MB" />
+			</Policies>
+			<!-- 最多备份30天以内的日志，此处为策略限制，Delete中可以按自己需要用正则表达式编写 -->
+			<!-- DefaultRolloverStrategy 用来指定同一个文件夹下最多有几个日志文件时开始删除最旧的，创建新的(通过max属性) -->
+			<!-- max="30" 经测试是配合SizeBasedTriggeringPolicy限制%i的存在数量， 并没有发现是网上流传的是最多保存多少个文件的限制，也或许是我写的有问题 -->
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+		<!-- ERROR 错误日志 -->
+		<RollingFile name="error" fileName="${LOG_HOME}\error.log" filePattern="${LOG_HOME}/error-%d{yyyy-MM-dd}-%i.log.gz"
+			immediateFlush="true">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_FORMAT}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+		<!-- WARN 告警日志 -->
+		<RollingFile name="warn" fileName="${LOG_HOME}\warn.log" filePattern="${LOG_HOME}/warn-%d{yyyy-MM-dd}-%i.log.gz"
+			immediateFlush="true">
+			<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_FORMAT}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100 MB" /> 
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+	</appenders>
+
+
+	<!-- 注意： 然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+	<!--1：当additivity="false"时，root中的配置就失灵了，不遵循缺省的继承机制 2：logger中的name非常重要，它代表记录器的包的形式，有一定的包含关系，试验表明 -->
+	<!--2-1：当定义的logger的name同名时，只有最后的那一个才能正确的打印日志 -->
+	<!--2-2：当对应的logger含有包含关系时，比如：name=test.log4j.test8 和 name=test.log4j.test8.UseLog4j，则2-1的情况是一样的 -->
+	<!--2-3：logger的name表示所有的包含在此名的所有记录器都遵循同样的配置，name的值中的包含关系是指记录器的名称哟！注意啦！ -->
+	<!--3：logger中定义的level和appender中的filter定义的level的区间取交集 -->
+	<!--4：如果appender中的filter定义的 levelMin > levelMax，则打印不出日志信息 -->
+	<loggers>
+		<!--建立一个默认的root的logger -->
+		<root level="trace">
+			<appender-ref ref="console" />
+			<appender-ref ref="info" />
+			<appender-ref ref="warn" />
+			<appender-ref ref="error" />
+		</root>
+		
+		<!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+		<logger name="org.springframework.core" level="info" />
+		<logger name="org.springframework.beans" level="warn" />
+		<logger name="org.springframework.context" level="info" />
+		<logger name="org.springframework.web" level="info" />
+		<!-- mybatis -->
+		<logger name="org.mybatis" level="INFO"></logger>
+		
+		<druid>
+			<appender-ref ref="warn"/>
+		</druid>
+		<!-- 控制台显示SQL语句：实际无效 -->
+		<logger name="druid.sql.Statement" level="INFO" additivity="false">
+			<appender-ref ref="console"/>
+		</logger>
+		<!-- 显示慢sql语句-->
+		<logger name="druid.sql.Statement" level="WARN" additivity="false">
+			<appender-ref ref="warn"/>
+		</logger>
+	</loggers>
+</configuration>

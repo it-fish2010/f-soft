@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fish.manager.area.mapper.SysAreaMapper">
+    <resultMap id="areaResultMap" type="com.fish.manager.area.entity.SysArea">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="code" column="area_code" jdbcType="VARCHAR"/>
+        <result property="name" column="area_name" jdbcType="VARCHAR"/> 
+        <result property="areaNamePy" column="area_name_py" jdbcType="VARCHAR"/>
+        <result property="parentAreaId" column="parent_area_id" jdbcType="VARCHAR"/> 
+        <result property="parentAreaName" column="PARENT_AREA_NAME" jdbcType="VARCHAR"/>
+        <result property="parentAreas" column="parent_areas" jdbcType="VARCHAR"/>
+        <result property="sortNo" column="sort_no" jdbcType="DECIMAL"/>
+        <result property="areaLevel" column="area_level" jdbcType="DECIMAL"/>
+        <result property="isCity" column="is_city" jdbcType="DECIMAL"/>
+        <result property="region" column="region" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="DECIMAL"/>
+        <result property="postCode" column="post_code" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="selectCols">
+        SELECT T.ID,
+               T.AREA_CODE,
+               T.AREA_NAME,
+               T.AREA_NAME_PY,
+               T.PARENT_AREA_ID,
+               (SELECT AREA_NAME FROM SYS_AREA WHERE ID=T.PARENT_AREA_ID) AS PARENT_AREA_NAME,
+               T.SORT_NO,
+               T.AREA_LEVEL,
+               T.IS_CITY,
+               T.REGION,
+               T.PARENT_AREAS,
+               T.STATUS,
+               T.POST_CODE,
+               T.CREATE_USER_ID,
+               T.CREATE_TIME,
+               T.MODIFY_USER_ID,
+               T.MODIFY_TIME
+          FROM SYS_AREA T
+    </sql>
+    <sql id="queryWhere">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(parentAreaId)">
+                AND T.PARENT_AREA_ID = #{parentAreaId,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(name)">
+                and t.AREA_NAME like concat('%',#{name},'%')
+            </if>
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(code)">
+                and t.AREA_CODE like concat('%',#{code},'%')
+            </if>
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(areaLevel)">
+                and t.area_level=#{areaLevel}
+            </if>
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(parentAreas)">
+                and t.PARENT_AREAS like concat('%',#{parentAreas},'%')
+            </if>
+            <if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(status)">
+                and t.status =#{status,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectByKey" parameterType="java.lang.String" resultMap="areaResultMap">
+        <include refid="selectCols"/> where T.ID = #{value,jdbcType=VARCHAR}
+    </select>
+    <!-- 必须包含排序参数 -->
+    <select id="selectList" parameterType="com.fish.core.common.QueryParam" resultMap="areaResultMap">
+        <include refid="selectCols"/>
+        <include refid="queryWhere"/>
+        ORDER BY T.AREA_LEVEL ASC,t.SORT_NO ASC ,T.AREA_CODE ASC
+    </select>
+    <insert id="insert" parameterType="com.fish.manager.area.entity.SysArea">
+        insert into sys_area
+          (id,
+           area_code,
+           area_name,
+           area_name_py,
+           parent_area_id,
+           parent_areas,
+           sort_no,
+           area_level,
+           is_city,
+           region,
+           status,
+           post_code,
+           create_user_id,
+           create_time)
+        values
+          (#{id},
+           #{areaCode},
+           #{areaName},
+           #{areaNamePy},
+           #{parentAreaId},
+           #{parentAreas},
+           #{sortNo},
+           #{areaLevel},
+           #{isCity},
+           #{region},
+           #{status},
+           #{postCode},
+           #{createUserId},
+           #{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.fish.manager.area.entity.SysArea">
+        UPDATE sys_area 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(areaCode)">
+				area_code = #{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(areaName)">
+				area_name = #{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(areaNamePy)">
+				area_name_py = #{areaNamePy,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(parentAreaId)">
+				parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(parentAreas)">
+				parent_areas = #{parentAreas,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(sortNo)">
+				sort_no = #{sortNo},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(areaLevel)">
+				area_level = #{areaLevel},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(isCity)">
+				is_city = #{isCity},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(region)">
+				region = #{region},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(status)">
+				status = #{status},
+			</if>
+			<if test="@com.fish.core.utils.OgnlUtils@isNotEmpty(postCode)">
+				post_code = #{postCode,jdbcType=VARCHAR},
+			</if>
+			modify_user_id = #{modifyUserId},
+			modify_time = #{modifyTime},
+		</trim>
+		WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM SYS_AREA WHERE RWID = #{value,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from sys_area where RWID in
+        <foreach item="areaId" collection="array" open="(" separator="," close=")">
+            #{areaId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+        <meta name="description" content="Fontawesome中文版webfont,是一款基于css框架的网页字体图标库，它完全免费">
+        <meta name="keywords" content="Fontawesome,中文字体图标,webfont,矢量图标,css框架,网页图标">
+        <title>案例 – Font Awesome 中文网</title>
+        <link rel="stylesheet" href="../layui/css/layui.css" media="all" />
+        <link rel="stylesheet" href="../bootstrap-3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/font-awesome.min.css">
+        <link rel="stylesheet" href="./css/font-awesome.help.main.css">
+    </head>
+    <body class="font-awesome">
+      <div id="wrap">
+        <div class="container">
+          <section class="hidden-print">
+            <div class="stripe-ad">
+              <p class="lead">以下图标使用方式的帮助信息，统一来源 <a href="http://www.fontawesome.com.cn/" target="_blank">Font Awesome 中文网</a>. 避免在无互联网的情况下也可以查看图标用法，所以制作了本地帮助周测。网络互联的情况下，可查看<a href="http://www.fontawesome.com.cn/examples/" target="_blank">更多用法</a>
+              </p>
+            </div>
+          </section>
+          <section id="basic">
+            <h2 class="page-header">基础图标使用方式</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <p>
+                  <i class="fa fa-camera-retro"></i>
+                  <span class="sr-only">例如: 默认图标</span> fa-camera-retro
+                </p>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p>你可以通过设置CSS前缀<code>fa</code>和图标的具体名称，来把Font Awesome 图标放在任意位置。Font Awesome 被设计为用于行内元素（我们喜欢用更简短的<code>&lt;i&gt;</code>标签，它的语义更加精准）。
+                </p>
+                <div class="highlight"><pre><code class="html"><span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-camera-retro</code></pre></div>
+                <div class="alert alert-success">
+                  <ul class="fa-ul">
+                    <li>
+                      <i class="fa fa-info-circle fa-lg fa-li" aria-hidden="true"></i>
+                      <strong class="sr-only">例如: 默认图标</strong> 如果您修改了图标容器的字体大小，图标大小会随之改变。同样也适用于颜色，阴影，阴影等其它任何CSS支持的效果上。
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="larger">
+            <h2 class="page-header">图标大小控制</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <p><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> fa-lg</p>
+                <p><i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i> fa-2x</p>
+                <p><i class="fa fa-camera-retro fa-3x" aria-hidden="true"></i> fa-3x</p>
+                <p><i class="fa fa-camera-retro fa-4x" aria-hidden="true"></i> fa-4x</p>
+                <p><i class="fa fa-camera-retro fa-5x" aria-hidden="true"></i> fa-5x</p>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p> 为了增加图标大小相对于它们的容器, 使用 <code>fa-lg</code> (33% 递增), <code>fa-2x</code>,
+                  <code>fa-3x</code>, 
+                  <code>fa-4x</code>,或 
+                  <code>fa-5x</code> classes.
+                </p>
+                <div class="highlight">
+                    <pre>
+                        <code class="html">
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro fa-lg"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-lg
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro fa-2x"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-2x
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro fa-3x"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-3x
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro fa-4x"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-4x
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera-retro fa-5x"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-5x
+                        </code>
+                    </pre>
+                    </div>
+                <div class="alert alert-success">
+                  <ul class="fa-ul">
+                    <li>
+                      <i class="fa fa-exclamation-triangle fa-li fa-lg"></i> 如果你的图标顶部和底部被裁剪掉，请确保你有足够的行高。
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="fixed-width">
+            <h2 class="page-header">Fixed Width Icons</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <div class="list-group">
+                  <a class="list-group-item" href="http://www.fontawesome.com.cn/examples/#"><i class="fa fa-home fa-fw" aria-hidde="true"></i>&nbsp; 首页</a>
+                  <a class="list-group-item" href="http://www.fontawesome.com.cn/examples/#"><i class="fa fa-book fa-fw" aria-hidde="true"></i>&nbsp; 关于我们</a>
+                  <a class="list-group-item" href="http://www.fontawesome.com.cn/examples/#"><i class="fa fa-pencil fa-fw" aria-hidde="true"></i>&nbsp; 后台应用编辑</a>
+                  <a class="list-group-item" href="http://www.fontawesome.com.cn/examples/#"><i class="fa fa-cog fa-fw" aria-hidde="true"></i>&nbsp; 系统设置</a>
+                </div>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p>
+                  使用 <code>fa-fw</code> 来设置图标在一个固定宽度内，主要用于不同宽度图标无法对齐的情况，尤其在列表或导航时起到重要作用。
+                </p>
+                <div class="highlight"><pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"list-group"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"list-group-item"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-home fa-fw"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;</span><span class="ni">&amp;nbsp;</span> 首页<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"list-group-item"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-book fa-fw"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;</span><span class="ni">&amp;nbsp;</span> 关于我们<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"list-group-item"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-pencil fa-fw"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;</span><span class="ni">&amp;nbsp;</span> 后台应用编辑<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"list-group-item"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-cog fa-fw"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;</span><span class="ni">&amp;nbsp;</span> 系统设置<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    </code></pre></div>
+              </div>
+            </div>
+          </section>
+          <section id="animated">
+            <h2 class="page-header">Animated Icons</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <p>
+                  <i class="fa fa-spinner fa-spin fa-3x fa-fw margin-bottom"></i>
+                  <span class="sr-only">用fa-spinner来作为加载动画图标</span>
+                  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom"></i>
+                  <span class="sr-only">用fa-circle-o-notch来作为加载动画图标</span>
+                  <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+                  <span class="sr-only">用fa-refresh来作为加载动画图标</span>
+                  <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+                  <span class="sr-only">用fa-cog来作为加载动画图标</span>
+                  <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                  <span class="sr-only">用fa-spinner来作为加载动画图标</span>
+                </p>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p>使用 <code>fa-spin</code> 使任意图标旋转，还可以使用 <code>fa-pulse</code> 使其进行8方位旋转。尤其适合 <code>fa-spinner</code>, <code>fa-refresh</code>, 和 <code>fa-cog</code>。
+                </p>
+                <div class="highlight"><pre><code class="html"><span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-spinner fa-spin fa-3x fa-fw"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Loading...<span class="nt">&lt;/span&gt;</span>
+    
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-circle-o-notch fa-spin fa-3x fa-fw"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Loading...<span class="nt">&lt;/span&gt;</span>
+    
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-refresh fa-spin fa-3x fa-fw"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Loading...<span class="nt">&lt;/span&gt;</span>
+    
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-cog fa-spin fa-3x fa-fw"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Loading...<span class="nt">&lt;/span&gt;</span>
+    
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-spinner fa-pulse fa-3x fa-fw"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Loading...<span class="nt">&lt;/span&gt;</span>
+    </code></pre></div>
+                <p class="alert alert-success">
+                  <i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i><strong class="sr-only">温馨提示:</strong>动画图标会在一些平台的浏览器中出现抖动的效果，可参见 <a href="https://github.com/FortAwesome/Font-Awesome/issues/671" class="alert-link" target="_blank">问题列表#671</a> 中的例子来解决此问题。
+                </p>
+                <p class="alert alert-success">
+                  <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i><strong class="sr-only">温馨提示:</strong> CSS3动画不支持IE8-IE9。
+                </p>
+              </div>
+            </div>
+          </section>
+          <section id="rotated-flipped">
+            <h2 class="page-header">图标翻转</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <p style="font-size: 18px;">
+                  <i class="fa fa-shield" aria-hidden="true"></i>&nbsp; normal
+                  <br>
+                  <i class="fa fa-shield fa-rotate-90" aria-hidden="true"></i>&nbsp; fa-rotate-90
+                  <br>
+                  <i class="fa fa-shield fa-rotate-180" aria-hidden="true"></i>&nbsp; fa-rotate-180
+                  <br>
+                  <i class="fa fa-shield fa-rotate-270" aria-hidden="true"></i>&nbsp; fa-rotate-270
+                  <br>
+                  <i class="fa fa-shield fa-flip-horizontal" aria-hidden="true"></i>&nbsp; fa-flip-horizontal
+                  <br>
+                  <i class="fa fa-shield fa-flip-vertical" aria-hidden="true"></i>&nbsp; fa-flip-vertical
+                </p>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p>
+                  若要对图标进行任意旋转和翻转, 可以使用 <code>fa-rotate-*</code> and <code>fa-flip-*</code> 类.
+                </p>
+                <div class="highlight"><pre><code class="html"><span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield"</span><span class="nt">&gt;&lt;/i&gt;</span> normal<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield fa-rotate-90"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-rotate-90<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield fa-rotate-180"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-rotate-180<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield fa-rotate-270"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-rotate-270<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield fa-flip-horizontal"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-flip-horizontal<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-shield fa-flip-vertical"</span><span class="nt">&gt;&lt;/i&gt;</span> fa-flip-vertical
+    </code></pre></div>
+              </div>
+            </div>
+          </section>
+          <section id="stacked">
+            <h2 class="page-header">Stacked Icons</h2>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">
+                <div class="margin-bottom">
+                  <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-twitter fa-stack-1x"></i>
+            </span> fa-twitter on fa-square-o
+                  <br>
+                  <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
+            </span> fa-flag on fa-circle
+                  <br>
+                  <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fa fa-square fa-stack-2x"></i>
+              <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+            </span> fa-terminal on fa-square
+                  <br>
+                  <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fa fa-camera fa-stack-1x"></i>
+              <i class="fa fa-ban fa-stack-2x text-danger"></i>
+            </span> fa-ban on fa-camera
+                </div>
+              </div>
+              <div class="col-md-9 col-sm-8">
+                <p>
+                  如果想要将多个图标组合起来，使用<code>fa-stack</code>类，作为父容器，<code>fa-stack-1x</code>作为正常比例的图标，<code>fa-stack-2x</code>作为大一些的图标。还可以使用<code>fa-inverse</code>类来切换图标颜色。您可以在父容器中 通过添加 <a href="http://www.fontawesome.com.cn/examples/#larger">larger icon</a> 类来控制整体大小。
+                </p>
+                <div class="highlight"><pre><code class="html"><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"fa-stack fa-lg"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-square-o fa-stack-2x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-twitter fa-stack-1x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    fa-twitter on fa-square-o<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"fa-stack fa-lg"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-circle fa-stack-2x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-flag fa-stack-1x fa-inverse"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    fa-flag on fa-circle<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"fa-stack fa-lg"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-square fa-stack-2x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-terminal fa-stack-1x fa-inverse"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    fa-terminal on fa-square<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"fa-stack fa-lg"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-camera fa-stack-1x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+      <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-ban fa-stack-2x text-danger"</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    fa-ban on fa-camera
+    </code></pre></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </body>
+</html>
