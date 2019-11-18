@@ -3,27 +3,13 @@ layui.use(['form','table','eleTree'], function() {
 	var table = layui.table;
 	var eleTree = layui.eleTree;
 	//用户管理-组织机构树形-20191116
-	var orgTree ;
-	$.post(layui.cache['contentPath'] + '/sys-org/findOrgTrees', {}, function(data) {
-		data = eval('('+data+')');
-		var orgTreeData = data.data;
-		orgTree = eleTree.render({
-			elem : '#fsoft-orgTree',
-			data : orgTreeData,
-			request: {
-			    name: "title",
-			    key: "id",
-			    children: "children",
-			    checked: "checked",
-			    disabled: "disabled",
-			    isLeaf: "isLeaf"
-			},
-			defaultExpandAll:true, 
-			showCheckbox:true
-		});
+	var orgTree = eleTree.render({
+		elem : '#fsoft-orgTree',
+		url: layui.cache['contentPath'] + '/sys-org/findOrgTrees',
+		request: {name: "title",key: "id",children: "children"},
+		highlightCurrent:true,
+		defaultExpandAll:true
 	});
-	
-	
 	// 第一个实例
 	table.render({
 		elem : '#table',
