@@ -1,6 +1,7 @@
 package com.fsoft.core.org.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import com.alibaba.fastjson.JSON;
@@ -24,6 +25,9 @@ public class SysOrganize implements Serializable {
 	private String parentOrgName;
 	//单位树ID 的拼接串，可通过like 语法查询所有下级
 	private String parentOrgs;
+
+	private BigDecimal sortNo;
+	private Integer status;
 	private String createUserId;
 	private Timestamp createTime;
 	private String modifyUserId;
@@ -83,6 +87,22 @@ public class SysOrganize implements Serializable {
 
 	public void setParentOrgs(String parentOrgs) {
 		this.parentOrgs = parentOrgs;
+	}
+
+	public BigDecimal getSortNo() {
+		return sortNo;
+	}
+
+	public void setSortNo(BigDecimal sortNo) {
+		this.sortNo = sortNo;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getCreateUserId() {

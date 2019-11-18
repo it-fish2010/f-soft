@@ -9,20 +9,24 @@
         <result property="parentOrgId" column="PARENT_ORG_ID" jdbcType="VARCHAR" />
         <result property="parentOrgCode" column="PARENT_ORG_CODE" jdbcType="VARCHAR" />
         <result property="parentOrgName" column="PARENT_ORG_NAME" jdbcType="VARCHAR" />
-        <result property="parentOrgs" column="PARENT_ORGS" />
+        <result property="parentOrgs" column="PARENT_ORGS" jdbcType="VARCHAR"/>
+        <result property="sortNo" column="sort_no" jdbcType="NUMERIC"/>
+        <result property="status" column="status" jdbcType="NUMERIC"/>
         <result property="createUserId" column="create_user_id" jdbcType="VARCHAR" />
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
         <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR" />
         <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP" />
     </resultMap>
     <insert id="insert" parameterType="com.fsoft.core.org.entity.SysOrganize">
-        INSERT INTO SYS_ORGANIZE (RWID,ORG_CODE,ORG_NAME,PARENT_ORG_ID,PARENT_ORGS,CREATE_USER_ID,CREATE_TIME)
+        INSERT INTO SYS_ORGANIZE (RWID,ORG_CODE,ORG_NAME,PARENT_ORG_ID,PARENT_ORGS,SORT_NO,status,CREATE_USER_ID,CREATE_TIME)
         VALUES(
         #{rwid,jdbcType=VARCHAR},
         #{orgCode,jdbcType=VARCHAR},
         #{orgName,jdbcType=VARCHAR},
         #{parentOrgId,jdbcType=VARCHAR},
         #{parentOrgs,jdbcType=VARCHAR},
+        #{sortNo,jdbcType=NUMERIC},
+        #{status,jdbcType=NUMERIC},
         #{createUserId,jdbcType=VARCHAR},
         #{createTime,jdbcType=TIMESTAMP}
         )
@@ -33,6 +37,8 @@
                T.ORG_NAME,
                T.PARENT_ORG_ID,
                T.PARENT_ORGS,
+               T.SORT_NO,
+               T.STATUS,
                P.ORG_CODE AS PARENT_ORG_CODE,
                P.ORG_NAME AS PARENT_ORG_NAME,
                T.CREATE_USER_ID,
@@ -56,12 +62,21 @@
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentOrgs)">
                 AND T.PARENT_ORGS LIKE concat('%',#{parentOrgs,jdbcType=VARCHAR},'%')
             </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                AND T.STATUS = #{status,jdbcType=NUMERIC}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(statusIn)">
+                AND T.STATUS IN (${statusIn})
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(statusNotIn)">
+                AND T.STATUS NOT IN (${statusNotIn})
+            </if>
         </trim>
     </sql>
     <select id="selectList" resultMap="orgMap" parameterType="com.fsoft.core.common.QueryParam">
         <include refid="selectCols" />
         <include refid="queryWhere" />
-        ORDER BY T.CREATE_TIME DESC
+        ORDER BY T.SORT_NO ASC,T.ORG_CODE ASC  
     </select>
     <select id="selectByKey" parameterType="java.lang.String" resultMap="orgMap">
         <include refid="selectCols" /> WHERE RWID = #{rwid,jdbcType=VARCHAR}
@@ -84,6 +99,12 @@
             </if>
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentOrgs)">
                 PARENT_ORGS = #{parentOrgs,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sortNo)">
+                SORT_NO = #{sortNo,jdbcType=NUMERIC},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                status = #{status,jdbcType=NUMERIC},
             </if>
             MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
             MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
