@@ -51,12 +51,12 @@ F-Soft泛松后台管理平台，旨在搭建一个接私活的基础框架，�
 
 # **功能效果截图**
 #### **首页**
-![X-Soft首页](https://gitee.com/it_software/f-soft/raw/master/modules/fish-web/WebRoot/WEB-INF/static/img/F-Soft-home.png)  
+![X-Soft首页](https://gitee.com/it_software/f-soft/raw/master/modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-home.png)  
 #### **菜单管理**
-![X-Soft 菜单列表](https://gitee.com/it_software/f-soft/raw/master/modules/fish-web/WebRoot/WEB-INF/static/img/F-Soft-menulist.jpg)
+![X-Soft 菜单列表](https://gitee.com/it_software/f-soft/raw/master/modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-menulist.jpg)
 #### **用户管理**
-![X-Soft 用户管理](https://gitee.com/it_software/f-soft/raw/master/modules/fish-web/WebRoot/WEB-INF/static/img/F-soft-userlist.jpg)
+![X-Soft 用户管理](https://gitee.com/it_software/f-soft/raw/master/modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-userlist.jpg)
 ###### 用户新增
-![X-Soft 用户管理](https://gitee.com/it_software/f-soft/raw/master/modules/fish-web/WebRoot/WEB-INF/static/img/F-soft-user-add.jpg)
+![X-Soft 用户管理](https://gitee.com/it_software/f-soft/raw/master/modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-add.jpg)
 #### **系统日志** 
-![X-Soft 系统日志](https://gitee.com/it_software/f-soft/raw/master/modules/fish-web/WebRoot/WEB-INF/static/img/F-Soft-loglist.jpg)
+![X-Soft 系统日志](https://gitee.com/it_software/f-soft/raw/master/modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-loglist.jpg)
