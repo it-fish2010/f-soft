@@ -50,13 +50,22 @@ F-Soft泛松后台管理平台，旨在搭建一个接私活的基础框架，�
 * `jdbc.password` 数据库用户登录密码，明文；`（出于安全考虑，建议生产环境使用Spring配置，自行编写解密规则）`  
 
 # **功能效果截图**
+#### **登录页面**
+![F-Soft登录](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-login.png)  
 #### **首页**
-![X-Soft首页](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-home.png)  
+![F-Soft首页](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-home.png)  
+#### **单位管理**
+![F-Soft 单位管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-orglist.png)
+#### **角色管理**
+![F-Soft 角色列表](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-rolelist.png)
+#### **角色管理（设置权限）**
+![F-Soft 设置权限](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-role-right.png)
 #### **菜单管理**
-![X-Soft 菜单列表](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-menulist.jpg)
+![F-Soft 菜单列表](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-menulist.png)
 #### **用户管理**
-![X-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-userlist.jpg)
-###### 用户新增
-![X-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-add.jpg)
+![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-userlist.jpg)
+###### 用户编辑（新增）
+![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-add.jpg)
+![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-modify.jpg)
 #### **系统日志** 
-![X-Soft 系统日志](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-loglist.jpg)
+![F-Soft 系统日志](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-loglist.png)
