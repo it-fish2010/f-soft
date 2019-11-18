@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fsoft.core.dict.mapper.SysDictMapper">
+    <resultMap id="dictMap" type="com.fsoft.core.dict.entity.SysDict">
+        <id property="id" column="ID" jdbcType="VARCHAR" />
+        <result property="code" column="DICT_CODE" jdbcType="VARCHAR" />
+        <result property="name" column="DICT_NAME" jdbcType="VARCHAR" />
+        <result property="status" column="STATUS" jdbcType="DECIMAL" />
+        <result property="dictType" column="DICT_TYPE" jdbcType="DECIMAL" />
+        <result property="createUserId" column="CREATE_USER_ID" jdbcType="VARCHAR" />
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+        <result property="modifyUserId" column="MODIFY_USER_ID" jdbcType="VARCHAR" />
+        <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="itemMap" type="com.fsoft.core.dict.entity.SysDictItem">
+        <id property="id" column="id" jdbcType="VARCHAR" />
+        <result property="code" column="ITEM_CODE" jdbcType="VARCHAR" />
+        <result property="name" column="ITEM_NAME" jdbcType="VARCHAR" />
+        <result property="dictId" column="DICT_ID" jdbcType="VARCHAR" />
+        <result property="dictCode" column="DICT_CODE" jdbcType="VARCHAR" />
+        <result property="dictName" column="DICT_NAME" jdbcType="VARCHAR" />
+        <result property="status" column="STATUS" jdbcType="DECIMAL" />
+        <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+        <result property="createUserId" column="CREATE_USER_ID" jdbcType="VARCHAR" />
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+        <result property="modifyUserId" column="MODIFY_USER_ID" jdbcType="VARCHAR" />
+        <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="selectDictCols">
+		SELECT T.ID,
+		       T.DICT_CODE,
+		       T.DICT_NAME,
+		       T.DICT_TYPE,
+		       T.STATUS,
+		       T.CREATE_USER_ID,
+		       T.CREATE_TIME,
+		       T.MODIFY_USER_ID,
+		       T.MODIFY_TIME
+		  FROM SYS_DICT T
+    </sql>
+    <sql id="selectItemCols">
+		SELECT T.ID,
+		       T.DICTID AS DICT_ID,
+		       D.DICT_CODE,
+		       D.DICT_NAME,
+		       T.ITEM_CODE,
+		       T.ITEM_NAME,
+		       T.PARENT_ID,
+		       T.STATUS,
+		       T.CREATE_USER_ID,
+		       T.CREATE_TIME,
+		       T.MODIFY_USER_ID,
+		       T.MODIFY_TIME
+		  FROM SYS_DICT_ITEM T
+		  LEFT JOIN SYS_DICT D ON T.DICTID = D.ID
+    </sql>
+    <select id="selectByKey" resultMap="dictMap" parameterType="java.lang.String">
+        <include refid="selectDictCols" /> WHERE T.ID = #{value,jdbcType=VARCHAR}
+    </select>
+    <select id="selectItemByKey" resultMap="itemMap" parameterType="java.lang.String">
+        <include refid="selectItemCols" /> WHERE T.ID = #{value,jdbcType=VARCHAR}
+    </select>
+    <select id="selectItem" resultMap="itemMap" parameterType="java.lang.String">
+        <include refid="selectItemCols" />
+        WHERE D.DICT_CODE = #{dictCode,jdbcType=VARCHAR} 
+          AND T.ITEM_CODE = #{itemCode,jdbcType=VARCHAR}
+    </select>
+    <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="dictMap">
+        <include refid="selectDictCols" />
+        <include refid="queryWhereDict" />
+        <choose>
+            <when test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sidx)">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.dict_code asc
+            </otherwise>
+        </choose>
+    </select>
+    <!-- 搜索数据区域 -->
+    <sql id="queryWhereDict">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                AND T.DICT_CODE = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+                AND T.DICT_NAME like concat('%',#{name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                AND T.STATUS = #{status}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictType)">
+                AND T.DICT_TYPE = #{dictType,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectItemList" parameterType="com.fsoft.core.common.QueryParam" resultMap="itemMap">
+        <include refid="selectItemCols" />
+        <include refid="queryWhereItem" />
+        <choose>
+            <when test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sidx)">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.modify_time desc,t.create_time asc
+            </otherwise>
+        </choose>
+    </select>
+    <sql id="queryWhereItem">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictId)">
+                AND T.DICT_ID = #{dictId,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictCode)">
+                AND D.DICT_CODE = #{dictCode,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictName)">
+                AND D.DICT_NAME LIKE concat('%',#{dictName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                AND T.ITEM_CODE = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+                AND T.ITEM_NAME = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                AND T.status = #{status}
+            </if>
+        </trim>
+    </sql>
+    <insert id="insert" parameterType="com.fsoft.core.dict.entity.SysDict">
+        INSERT INTO SYS_DICT (ID, DICT_CODE, DICT_NAME, DICT_TYPE, STATUS,CREATE_USER_ID,CREATE_TIME ) VALUES
+        (#{id,jdbcType=VARCHAR},
+         #{code,jdbcType=VARCHAR},
+         #{name,jdbcType=VARCHAR},
+         #{dictType,jdbcType=DECIMAL},
+         #{status,jdbcType=DECIMAL},
+         #{createUserId,jdbcType=VARCHAR},
+         #{createTime,jdbcType=TIMESTAMP}
+         )
+    </insert>
+    <insert id="insertItem" parameterType="com.fsoft.core.dict.entity.SysDictItem">
+        INSERT INTO SYS_DICT_ITEM (ID, DICT_ID, ITEM_CODE, ITEM_NAME,PARENT_ID,STATUS,CREATE_USER_ID, CREATE_TIME)
+        VALUES 
+        (#{id,jdbcType=VARCHAR},
+         #{dictId,jdbcType=VARCHAR},
+         #{code,jdbcType=VARCHAR},
+         #{name,jdbcType=VARCHAR},
+         #{status,jdbcType=DECIMAL},
+         #{createUserId,jdbcType=VARCHAR},
+         #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.fsoft.core.dict.entity.SysDict">
+        UPDATE SYS_DICT
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                DICT_CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+                DICT_NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                STATUS = #{status,jdbcType=DECIMAL},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictType)">
+                DICT_TYPE = #{dictType,jdbcType=DECIMAL},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(modifyUserId)">
+                MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+            </if>
+            MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+        </trim>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        DELETE FROM SYS_DICT WHERE ID = #{value}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM SYS_DICT WHERE ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateItem" parameterType="com.fsoft.core.dict.entity.SysDictItem">
+        UPDATE SYS_DICT_ITEM
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                ITEM_CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(itemName)">
+                ITEM_NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentId)">
+                PARENT_ID = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                STATUS = #{status,jdbcType=DECIMAL},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(modifyUserId)">
+                MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+            </if>
+            MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+        </trim>
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <delete id="deleteItem" parameterType="java.lang.String">
+        DELETE FROM SYS_DICT_ITEM WHERE ID = #{value,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteItemByDictId" parameterType="java.lang.String">
+        DELETE FROM SYS_DICT_ITEM WHERE DICT_ID = #{value}
+    </delete>
+    <delete id="deleteItemByDictCode" parameterType="java.lang.String">
+        DELETE FROM SYS_DICT_ITEM I 
+         WHERE EXISTS (SELECT 1 FROM SYS_DICT D WHERE D.ID = I.DICT_ID AND D.DICT_CODE= #{value,jdbcType=VARCHAR})
+    </delete>
+
+    <delete id="deleteItemBatch" parameterType="java.util.List">
+        delete from sys_dict_item where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

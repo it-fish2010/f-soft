@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fsoft.manager.menu.mapper.SysMenuMapper">
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap  id="sysMenuMap" type="com.fsoft.manager.menu.entity.SysMenu">
+        <result property="id" column="RWID" jdbcType="VARCHAR"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR"/>
+        <result property="parentName" column="PARENT_NAME" jdbcType="VARCHAR"/>
+        <result property="actionUrl" column="ACTION_URL" jdbcType="VARCHAR"/>
+        <result property="perms" column="PERMS" jdbcType="VARCHAR"/>
+        <result property="menuType" column="MENU_TYPE" jdbcType="DECIMAL"/>
+        <result property="icon" column="ICON" jdbcType="VARCHAR"/>
+        <result property="sortNo" column="SORT_NO" jdbcType="DECIMAL"/>
+        <result property="createUserId" column="CREATE_USER_ID" jdbcType="VARCHAR" />
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+        <result property="modifyUserId" column="MODIFY_USER_ID" jdbcType="VARCHAR" />
+        <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP" />
+    </resultMap>
+	<sql id="selectCols">
+        SELECT T.RWID,
+               T.NAME,
+               T.PARENT_ID,
+               (SELECT NAME FROM SYS_MENU WHERE RWID = T.PARENT_ID) AS PARENT_NAME,
+               T.ACTION_URL,
+               T.PERMS,
+               T.MENU_TYPE,
+               T.ICON,
+               T.SORT_NO,
+               T.CREATE_USER_ID,
+               T.CREATE_TIME,
+               T.MODIFY_USER_ID,
+               T.MODIFY_TIME
+          FROM SYS_MENU T
+	</sql>
+	<select id="selectByKey" parameterType="java.lang.String" resultMap="sysMenuMap">
+		<include refid="selectCols"/> where T.RWID = #{value}
+	</select>
+    <!-- 查询参数 com.fsoft.core.common.QueryParam 确保分页参数offset/limit不为空 -->
+	<select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="sysMenuMap">
+		<include refid="selectCols"/>
+		<include refid="queryWhere" />
+        <choose>
+            <when test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sidx)">
+                ORDER BY ${sidx} ${order}
+            </when>
+			<otherwise>
+                ORDER BY T.SORT_NO ASC ,T.PERMS ASC
+			</otherwise>
+        </choose>
+	</select>
+    <!-- 搜索数据区域 -->
+    <sql id="queryWhere">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentId)"> 
+            	AND T.PARENT_ID = #{parentId,jdbcType=VARCHAR}
+        	</if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)"> 
+            	AND T.NAME LIKE CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+        	</if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(actionUrl)"> 
+            	AND T.ACTION_URL LIKE CONCAT('%',#{actionUrl,jdbcType=VARCHAR},'%')
+        	</if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(perms)"> 
+            	AND T.PERMS LIKE CONCAT('%',#{perms,jdbcType=VARCHAR},'%')
+        	</if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(menuType)"> 
+            	AND T.MENU_TYPE = #{menuType,jdbcType=DECIMAL}
+        	</if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(menuTypeNotIn)">
+                AND T.MENU_TYPE NOT IN (${menuTypeNotIn})
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(roleId)">
+            	AND EXISTS (SELECT 1 FROM SYS_ROLE_MENU RM WHERE RM.MENU_ID = T.RWID AND RM.ROLE_ID = #{roleId,jdbcType=VARCHAR})
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(userId)">
+            	AND EXISTS (SELECT 1 FROM SYS_ROLE_MENU RM WHERE RM.MENU_ID = T.RWID 
+                         									 AND EXISTS (SELECT 1 FROM SYS_USER_ROLE UR
+                         									 					  LEFT JOIN SYS_ROLE  R ON R.RWID = UR.ROLE_ID 
+                                             									 WHERE UR.ROLE_ID = RM.ROLE_ID AND R.STATUS = 1 AND UR.USER_ID = #{userId,jdbcType=VARCHAR})
+					 )
+            </if>
+        </trim>
+    </sql>
+	 
+	<insert id="insert" parameterType="com.fsoft.manager.menu.entity.SysMenu">
+        INSERT INTO SYS_MENU
+          (RWID,PARENT_ID,NAME,ACTION_URL,PERMS,MENU_TYPE,ICON,SORT_NO,CREATE_USER_ID,CREATE_TIME)
+        VALUES
+          (#{id,jdbcType=VARCHAR},
+           #{parentId,jdbcType=VARCHAR},
+           #{name,jdbcType=VARCHAR},
+           #{actionUrl,jdbcType=VARCHAR},
+           #{perms,jdbcType=VARCHAR},
+           #{menuType,jdbcType=DECIMAL},
+           #{icon,jdbcType=VARCHAR},
+           #{sortNo,jdbcType=DECIMAL},
+           #{createUserId,jdbcType=VARCHAR},
+           #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	 
+	<update id="update" parameterType="com.fsoft.manager.menu.entity.SysMenu">
+		UPDATE SYS_MENU 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentId)">
+				PARENT_ID = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(actionUrl)">
+				ACTION_URL = #{actionUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(perms)">
+				PERMS = #{perms,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(menuType)">
+				MENU_TYPE = #{menuType,jdbcType=DECIMAL},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(icon)">
+				ICON = #{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sortNo)">
+				SORT_NO = #{sortNo,jdbcType=DECIMAL},
+			</if>
+			MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+			MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+		</trim>
+		WHERE RWID = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM SYS_MENU where RWID = #{value,jdbcType=VARCHAR}
+	</delete>
+    <!-- 删除菜单，同时要删除菜单与角色关系 20190506  -->    
+    <delete id="deleteMenuRole" parameterType="java.lang.String">
+        DELETE FROM SYS_ROLE_MENU WHERE MENU_ID = #{menuId,jdbcType=VARCHAR}
+    </delete>
+    <!-- 批量删除 角色与菜单关联关系 20191102 Fish  -->
+	<delete id="deleteMenuRoleBatch" parameterType="java.util.List">
+		DELETE FROM SYS_MENU WHERE RWID IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	<!-- 批量删除菜单记录 -->
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM SYS_MENU WHERE RWID IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	<!-- 添加角色与菜单的依赖关系 -->
+	<insert id="insertMenuRole" parameterType="java.lang.String">
+		INSERT INTO SYS_ROLE_MENU(RWID,MENU_ID,ROLE_ID) 
+		VALUES 
+		(#{id,jdbcType=VARCHAR},
+		 #{menuId,jdbcType=VARCHAR},
+		 #{roleId,jdbcType=VARCHAR})
+	</insert>
+</mapper>

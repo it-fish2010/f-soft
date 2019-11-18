@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd        
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+     	http://www.springframework.org/schema/aop 
+     	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/mvc 
+     	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+    <context:component-scan base-package="xin.cymall">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <context:component-scan base-package="com.fsoft">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <context:annotation-config />
+
+    <!--定时任务 -->
+    <task:annotation-driven scheduler="myScheduler" mode="proxy" />
+    <task:scheduler id="myScheduler" pool-size="10" />
+
+    <mvc:default-servlet-handler />
+    <!-- 自动为所有被 @AspectJ 标识的类创建 Cglib 代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!-- 解决 @ResponseBody 返回中文时的乱码问题（必须在 <mvc:annotation-driven /> 之前配置） -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <constructor-arg value="UTF-8" />
+                    <property name="writeAcceptCharset" value="false" />
+                </bean>
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+                <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                            <value>application/json</value>
+                        </list>
+                    </property>
+                    <property name="features">
+                        <list>
+                            <value>WriteMapNullValue</value>
+                            <!-- 输出key时是否使用双引号 -->
+                            <value>QuoteFieldNames</value>
+                            <!-- 字符类型字段如果为null,输出为"",而非null -->
+                            <value>WriteNullStringAsEmpty</value>
+                            <!-- Boolean字段如果为null,输出为false,而非null -->
+                            <value>WriteNullBooleanAsFalse</value>
+                            <!-- List字段如果为null,输出为[],而非null -->
+                            <value>WriteNullListAsEmpty</value>
+                            <!-- 数值字段如果为null,输出为0,而非nullfish-manager -->
+                            <value>WriteNullNumberAsZero</value>
+                        </list>
+                    </property>
+                    <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <!-- 启用MVC注解 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+                <property name="features">
+                    <list>
+                        <value>WriteMapNullValue</value>
+                        <value>QuoteFieldNames</value>
+                        <value>WriteDateUseDateFormat</value>
+                        <!-- 禁用fastjson循环引用检测 -->
+                        <value>DisableCircularReferenceDetect</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 指定允许访问的静态资源路径 -->
+    <mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
+    <mvc:resources mapping="/plugins/**" location="/plugins/" />
+    <!-- FreeMarker视图解析器 (默认视图) -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+        <property name="contentType" value="text/html; charset=UTF-8" />
+        <property name="cache" value="false" />
+        <property name="suffix" value=".ftl" />
+        <property name="requestContextAttribute" value="request" />
+        <property name="order" value="0" />
+    </bean>
+    <!-- 配置 FreeMarker 全局属性 -->
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/view/" />
+        <!-- 格式化配置 -->
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="locale">zh_CN</prop>
+                <prop key="template_update_delay">5</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="url_escaping_charset">UTF-8</prop>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="number_format">0.##</prop>
+                <prop key="boolean_format">true, false</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="whitespace_stripping">true</prop>
+                <prop key="tag_syntax">auto_detect</prop>
+                <prop key="template_exception_handler">html_debug</prop>
+                <!-- 处理页面中的空值，主要用于生产环境，开发环境下开启可能会掩盖程序漏洞 -->
+                <prop key="classic_compatible">true</prop>
+            </props>
+        </property>
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="perms" value-ref="SysPermissionModel" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="SysPermissionModel" class="com.fsoft.manager.shiro.SysPermissionModel"></bean>
+
+    <!-- Velocity视图解析器 -->
+    <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="viewNames" value="*.html" />
+        <property name="suffix" value="" />
+        <property name="dateToolAttribute" value="date" />
+        <property name="numberToolAttribute" value="number" />
+        <property name="toolboxConfigLocation" value="/WEB-INF/velocity-toolbox.xml" />
+        <property name="requestContextAttribute" value="rc" />
+        <property name="order" value="1" />
+    </bean>
+    <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/view" />
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置多部件解析器（文件上传），此处 id 值不可缺省且必须为 multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <!-- 单位：字节（b），当前上传限制：100M -->
+        <property name="maxUploadSize" value="10485760000"></property>
+        <property name="maxInMemorySize" value="40960"></property>
+    </bean>
+
+    <!-- Kaptcha验证码生成器 -->
+    <bean name="producer" class="com.google.code.kaptcha.impl.DefaultKaptcha" scope="singleton">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!-- 是否有边框 可选yes 或者 no -->
+                        <prop key="kaptcha.border">no</prop>
+                        <!-- 验证码图片的宽度 默认 200 -->
+                        <prop key="kaptcha.image.width">120</prop>
+                        <!-- 验证码图片的高度 默认 50 -->
+                        <prop key="kaptcha.image.height">50</prop>
+                        
+                        <!-- 验证码文本字符颜色 -->
+                        <prop key="kaptcha.textproducer.font.color">red</prop>
+                        <!-- 验证码文本字符大小 默认为40 -->
+                        <prop key="kaptcha.textproducer.font.size">40</prop>
+                        <!-- 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize) -->
+                        <!-- <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop> -->
+
+                        <!-- 验证码文本字符长度 默认为5 -->
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <!-- 文字间隔  2 -->
+                        <prop key="kaptcha.textproducer.char.space">4</prop>
+                        <!-- 验证码文本字符内容范围 默认为abcde2345678gfynmnpwx -->
+                        <prop key="kaptcha.textproducer.char.string">QWERTYUIOPASDFGHJKLZXCVBNM1234567890</prop>
+                        <!-- 干扰线颜色 合法值：R,G,B，或者white、black、blue，默认black -->
+                        <prop key="kaptcha.noise.color">blue</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

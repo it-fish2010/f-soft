@@ -1,20 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.fish</groupId>
-    <version>${com-fish.version}</version>
+    <groupId>com.fsoft</groupId>
+    <artifactId>com-fsoft</artifactId>
+    <version>${f-soft.version}</version>
     <packaging>pom</packaging>
     <modules>
-        <module>modules/fish-core</module> <!-- 公共模块 -->
-        <module>modules/fish-manager</module> <!-- 管理后台 -->
+        <module>modules/fsoft-core</module> <!-- 公共模块 -->
+        <module>modules/fsoft-manager</module> <!-- 管理后台 -->
         <!-- WEB前端工程 -->
-        <module>modules/fish-web</module>
+        <module>modules/fsoft</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-runtime.version>1.8</java-runtime.version>
-        <com-fish.version>1.0</com-fish.version>
-        <fish-core.version>1.0</fish-core.version>
+        <!-- fsoft 版本 -->
+        <f-soft.version>1.0</f-soft.version>
         <!-- maven 插件版本 -->
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-war-plugin.version>2.6</maven-war-plugin.version>
@@ -182,6 +183,7 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator-version}</version>
         </dependency>
+        <!-- 引入Mybatis分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
@@ -414,5 +416,4 @@
             </resource>
         </resources>
     </build>
-    <artifactId>com-fish-pom</artifactId>
 </project>

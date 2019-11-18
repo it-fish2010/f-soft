@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fsoft.manager.role.mapper.SysRoleMapper">
+    <resultMap id="sysRoleMap" type="com.fsoft.manager.role.entity.SysRole">
+        <id property="id" column="RWID" jdbcType="VARCHAR" />
+        <result property="code" column="ROLE_CODE" jdbcType="VARCHAR" />
+        <result property="name" column="ROLE_NAME" jdbcType="VARCHAR" />
+        <result property="remark" column="REMARK" jdbcType="VARCHAR" />
+        <result property="status" column="STATUS" jdbcType="DECIMAL" />
+        <result property="isSystem" column="IS_SYSTEM" jdbcType="DECIMAL" />
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+        <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR" />
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="selectCols">
+        SELECT T.RWID,
+               T.ROLE_CODE,
+               T.ROLE_NAME,
+               T.REMARK,
+               T.STATUS,
+               T.IS_SYSTEM,
+               T.CREATE_USER_ID,
+               T.CREATE_TIME,
+               T.MODIFY_USER_ID,
+               T.MODIFY_TIME
+          FROM SYS_ROLE T
+    </sql>    
+    <select id="selectByKey" parameterType="java.lang.String" resultMap="sysRoleMap">
+        <include refid="selectCols" /> WHERE T.RWID = #{value,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByCode" parameterType="java.lang.String" resultMap="sysRoleMap">
+        <include refid="selectCols" /> WHERE T.ROLE_CODE = #{value,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectRoleListByUserId" parameterType="java.lang.String" resultMap="sysRoleMap">
+        <include refid="selectCols"/>
+        WHERE EXISTS (SELECT 1 FROM SYS_USER_ROLE R WHERE R.ROLE_ID = T.RWID AND R.USER_ID = #{value})
+    </select>
+    <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="sysRoleMap">
+        <include refid="selectCols" />
+        <include refid="queryWhere" />
+        ORDER BY CREATE_TIME desc
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="queryWhere">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                AND T.ROLE_CODE = #{code}
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+                AND T.ROLE_NAME like  concat('%',#{name},'%')
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(remark)">
+                AND T.REMARK like  concat('%',#{remark},'%')
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                AND T.STATUS = #{status}
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="insert" parameterType="com.fsoft.manager.role.entity.SysRole">
+        INSERT INTO SYS_ROLE (RWID,ROLE_CODE,ROLE_NAME,REMARK,STATUS,IS_SYSTEM,CREATE_USER_ID,CREATE_TIME)
+        VALUES
+        (#{id,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        #{status,jdbcType=DECIMAL},
+        #{isSystem,jdbcType=DECIMAL},
+        #{createUserId,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+	<!-- 新增用户与角色关系 -->
+	<insert id="insertUserRole" parameterType="com.fsoft.manager.user.entity.SysUserRole">
+		INSERT INTO SYS_USER_ROLE(RWID,USER_ID,ROLE_ID) 
+		VALUES
+		(#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{roleId,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="batchInsertUserRole" parameterType="java.util.List">
+		INSERT INTO SYS_USER_ROLE(RWID,USER_ID,ROLE_ID) 
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.id,jdbcType=VARCHAR},#{item.userId,jdbcType=VARCHAR},#{item.roleId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+    <update id="update" parameterType="com.fsoft.manager.role.entity.SysRole">
+        UPDATE SYS_ROLE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+                role_code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+                role_name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(remark)">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+                status = #{status,jdbcType=DECIMAL},
+            </if>
+            modify_user_id = #{modifyUserId,jdbcType=VARCHAR},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        </trim>
+        WHERE RWID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM SYS_ROLE WHERE RWID = #{value,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteUserRole" parameterType="java.lang.String">
+    	DELETE FROM SYS_USER_ROLE WHERE ROLE_ID = #{value,jdbcType=VARCHAR}
+    </delete>
+    <!-- 根据角色RWID标识，删除菜单与角色的依赖关系记录  -->
+    <delete id="deleteRoleMenu" parameterType="java.lang.String">
+    	DELETE FROM SYS_ROLE_MENU WHERE ROLE_ID = #{rwid,jdbcType=VARCHAR}
+    </delete>
+    <!-- 批量分配菜单与角色的权限 -->
+    <insert id="insertRoleMenuBatch" parameterType="com.fsoft.manager.role.entity.SysRole">
+    	INSERT INTO SYS_ROLE_MENU (RWID,MENU_ID,ROLE_ID) VALUES 
+    	<foreach collection="menus" index="idx" item="item" separator=",">
+    	(UPPER(REPLACE(UUID(),'-','')),#{item,jdbcType=VARCHAR},#{id,jdbcType=VARCHAR})
+    	</foreach>
+    </insert>
+    
+</mapper>
