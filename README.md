@@ -51,21 +51,21 @@ F-Soft泛松后台管理平台，旨在搭建一个接私活的基础框架，�
 
 # **功能效果截图**
 #### **登录页面**
-![F-Soft登录](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-login.png)  
+![F-Soft登录](./doc/img/F-Soft-login.png)  
 #### **首页**
-![F-Soft首页](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-home.png)  
+![F-Soft首页](./doc/img/F-Soft-home.png)  
 #### **单位管理**
-![F-Soft 单位管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-orglist.png)
+![F-Soft 单位管理](./doc/img/F-Soft-orglist.png)
 #### **角色管理**
-![F-Soft 角色列表](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-rolelist.png)
+![F-Soft 角色列表](./doc/img/F-Soft-rolelist.png)
 #### **角色管理（设置权限）**
-![F-Soft 设置权限](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-role-right.png)
+![F-Soft 设置权限](./doc/img/F-Soft-role-right.png)
 #### **菜单管理**
-![F-Soft 菜单列表](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-menulist.png)
+![F-Soft 菜单列表](./doc/img/F-Soft-menulist.png)
 #### **用户管理**
-![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-userlist.jpg)
+![F-Soft 用户管理](./doc/img/F-soft-userlist.jpg)
 ###### 用户编辑（新增）
-![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-add.jpg)
-![F-Soft 用户管理](./modules/fsoft/WebRoot/WEB-INF/static/img/F-soft-user-modify.jpg)
+![F-Soft 用户管理](./doc/img/F-soft-user-add.jpg)
+![F-Soft 用户管理](./doc/img/F-soft-user-modify.jpg)
 #### **系统日志** 
-![F-Soft 系统日志](./modules/fsoft/WebRoot/WEB-INF/static/img/F-Soft-loglist.png)
+![F-Soft 系统日志](./doc/img/F-Soft-loglist.png)
