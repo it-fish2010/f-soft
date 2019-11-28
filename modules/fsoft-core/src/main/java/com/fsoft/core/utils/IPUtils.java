@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.druid.util.StringUtils;
 
 /**
+ * F-Soft IP工具类，主要功能：通过HttpServletRequest 获取客户端的IP地址
+ * @package com.fsoft.core.utils
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019-03-29
- * @copyright 佳乐软件股份有限公司© 2019-2019
- */
+ * @date 2019-11-25
+ * @CopyRight © F-Soft
+ **/
 public class IPUtils {
 	private static Logger logger = LoggerFactory.getLogger(IPUtils.class);
 

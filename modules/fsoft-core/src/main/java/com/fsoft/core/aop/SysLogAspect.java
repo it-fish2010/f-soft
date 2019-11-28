@@ -28,13 +28,13 @@ import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.UUIDUtils;
 
 /**
- * 系统日志切面
- * 
+ * F-Soft 系统日志切面 在需要记录日志的Controller，使用@SysLog 标签，可实现日志记录
+ * @package com.fsoft.core.aop
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019-03-24
- * @copyright 佳乐软件股份有限公司© 2019-2019
- */
+ * @date 2019-11-25
+ * @CopyRight © F-Soft
+ **/
 @Aspect
 @Component
 @Order(1)

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fsoft.core.annotation.SystemLog;
 import com.fsoft.core.common.QueryParam;
 import com.fsoft.core.sys.entity.SysLog;
 import com.fsoft.core.sys.service.SysLogService;
@@ -23,12 +22,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 /**
- * 
  * @author Fish
  * @email it.fish2010@foxmail.com
  * @create 2019-03-23
  * @copyright 佳乐软件股份有限公司© 2019-2019
- *
  */
 @Controller
 @RequestMapping("/sys/log")
@@ -50,7 +47,6 @@ public class SysLogController {
 
 	/**
 	 * 列表
-	 * 
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -69,13 +65,13 @@ public class SysLogController {
 	}
 
 	/***
-	 * 
-	 * @author Fish 2019-03-24
-	 * @param ids
+	 * F-Soft 删除系统日志记录
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-11-25
+	 * @param ids 日志记录的rwid标识，多个标识使用逗号隔开
 	 * @return
 	 * @throws Exception
 	 */
-	@SystemLog("删除日志")
 	@ResponseBody
 	@RequestMapping("/removeBatch")
 	public RetVo removeBatch(@RequestBody String[] ids) throws Exception {
