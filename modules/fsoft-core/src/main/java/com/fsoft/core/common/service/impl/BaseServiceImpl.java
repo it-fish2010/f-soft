@@ -8,6 +8,15 @@ import com.fsoft.core.common.QueryParam;
 import com.fsoft.core.common.base.BaseMapper;
 import com.fsoft.core.common.service.BaseService;
 
+/*********
+ * F-Soft
+ * @package com.fsoft.core.common.service.impl
+ * @author Fish
+ * @email it.fish2010@foxmail.com
+ * @date 2019-11-29
+ * @CopyRight © F-Soft
+ * @param <T>
+ **********/
 public class BaseServiceImpl<T> implements BaseService<T> {
 	@Autowired
 	private BaseMapper<T> mapper;
@@ -25,6 +34,16 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	@Override
 	public int save(T entity) throws Exception {
 		return mapper.insert(entity);
+	}
+
+	@Override
+	public int saveBatch(List<T> list) throws Exception {
+		return mapper.insertBatch(list);
+	}
+
+	@Override
+	public int modifyBatch(List<T> list) throws Exception {
+		return mapper.updateBatch(list);
 	}
 
 	@Override

@@ -131,7 +131,11 @@ public class SysUserController extends BaseController {
 	}
 
 	/**
-	 * 用户信息
+	 * F-Soft 用户详情
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-11-29
+	 * @param userId
+	 * @return
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -142,8 +146,12 @@ public class SysUserController extends BaseController {
 		return RetVo.ok(1L, user);
 	}
 
-	/**
-	 * 保存用户
+	/***
+	 * F-Soft 保存用户(新增)
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-11-29
+	 * @param user
+	 * @return
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -161,6 +169,9 @@ public class SysUserController extends BaseController {
 			user.setLoginPwd(Global.SYS_USER_DEFAULE_PWD);
 		if (OgnlUtils.isNotEmpty(user.getRoleIdList()))
 			user.setRoleIdList(buildStrList(user.getRoleIdList()));
+		//增加ORGID标识
+		if (StringUtils.isEmpty(user.getOrgId()))
+			user.setOrgId(getUser().getCurrentOrgId());
 		try {
 			user.setCreateUserId(getUserId());
 			user.setCreateTime(DateTimeUtils.getNowTime());
@@ -173,8 +184,12 @@ public class SysUserController extends BaseController {
 		}
 	}
 
-	/**
-	 * 修改用户
+	/***
+	 * F-Soft 修改用户(更新)
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-11-29
+	 * @param user
+	 * @return
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -189,6 +204,8 @@ public class SysUserController extends BaseController {
 			return RetVo.error("用户信息已更新，请刷新后重试");
 		if (OgnlUtils.isNotEmpty(user.getRoleIdList()))
 			user.setRoleIdList(buildStrList(user.getRoleIdList()));
+		if (StringUtils.isBlank(user.getOrgId()))
+			user.setOrgId(getUser().getCurrentOrgId());
 		try {
 			user.setModifyUserId(getUserId());
 			user.setModifyTime(DateTimeUtils.getNowTime());

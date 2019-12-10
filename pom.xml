@@ -18,6 +18,8 @@
         <java-runtime.version>1.8</java-runtime.version>
         <!-- fsoft 版本 -->
         <f-soft.version>1.0</f-soft.version>
+        <fsoft-generator.version>1.0</fsoft-generator.version>
+
         <!-- maven 插件版本 -->
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-war-plugin.version>2.6</maven-war-plugin.version>

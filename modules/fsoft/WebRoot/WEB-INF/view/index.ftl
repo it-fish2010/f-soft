@@ -19,7 +19,7 @@
         <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
             <ul class="layui-tab-title">
                 <li class="home">
-                    <i class="fa fa-home" aria-hidden="true"></i>我的桌面
+                    <i class="fa fa-home" aria-hidden="true"></i>首页
                 </li>
             </ul>
             <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">

@@ -11,7 +11,7 @@
         <dependent-module archiveName="fsoft-manager-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/fsoft-manager/fsoft-manager">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="java-output-path" value="/fish-web/target/classes"/>
+        <property name="java-output-path" value="/fsoft/target/classes"/>
         <property name="context-root" value="fsoft-web"/>
     </wb-module>
 </project-modules>
