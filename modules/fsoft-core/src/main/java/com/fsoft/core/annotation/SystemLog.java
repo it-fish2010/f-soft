@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 系统日志注解，实现参考：com.fsoft.core.aop.SysLogAspect
+ * F-Soft 系统日志注解，实现参考：com.fsoft.core.aop.SysLogAspect
  * @package com.fsoft.core.annotation
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019-05-08
- * @copyright 2009-2019
+ * @date 2019-12-11
+ * @CopyRight © F-Soft
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

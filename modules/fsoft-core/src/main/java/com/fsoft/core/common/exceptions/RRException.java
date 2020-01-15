@@ -1,15 +1,13 @@
 package com.fsoft.core.common.exceptions;
 
-/**
- * 自定义异常
- * 
+/*********
+ * F-Soft 自定义异常
  * @package com.fsoft.core.common.exceptions
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019年3月22日
- * @copyright ©佳松柏软件 2019-2019
- *
- */
+ * @date 2019-12-11
+ * @CopyRight © F-Soft
+ **********/
 public class RRException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private String msg;

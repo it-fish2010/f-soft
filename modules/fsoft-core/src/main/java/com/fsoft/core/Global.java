@@ -1,5 +1,13 @@
 package com.fsoft.core;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import com.alibaba.fastjson.JSON;
+
 public class Global {
 	/**
 	 * 超级管理员 角色ID
@@ -71,6 +79,27 @@ public class Global {
 
 		public int getValue() {
 			return value;
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		String[] nums = new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18",
+				"19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33" };
+		int k = 0;
+		List<String> rs = new ArrayList<String>();
+		List<String> ls = Arrays.asList(nums);
+		while (k <= 100) {
+			int idx = new Random().nextInt(ls.size() - 1);
+			String ch = ls.get(idx);
+			if (rs.size() > 0 && JSON.toJSONString(rs).indexOf(ch) > -1)
+				continue;
+			rs.add(ch);
+			if (rs.size() % 6 == 0) {
+				k++;
+				Collections.sort(rs);
+				System.out.println(JSON.toJSONString(rs));
+				rs = new ArrayList<String>();
+			}
 		}
 	}
 

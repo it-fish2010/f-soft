@@ -103,8 +103,14 @@ public class SysUserController extends BaseController {
 		return RetVo.ok().put("user", getUser());
 	}
 
-	/**
-	 * 修改登录用户密码
+	/***
+	 * F-Soft 修改登录用户密码
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-12-11
+	 * @param password
+	 * @param newPassword
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@SystemLog("修改密码")

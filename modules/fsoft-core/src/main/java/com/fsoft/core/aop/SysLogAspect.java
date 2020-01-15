@@ -28,7 +28,7 @@ import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.UUIDUtils;
 
 /**
- * F-Soft 系统日志切面 在需要记录日志的Controller，使用@SysLog 标签，可实现日志记录
+ * F-Soft 系统日志切面
  * @package com.fsoft.core.aop
  * @author Fish
  * @email it.fish2010@foxmail.com
@@ -44,6 +44,11 @@ public class SysLogAspect {
 	private Logger log = LoggerFactory.getLogger(SysLogAspect.class);
 	private long startTime = 0;
 
+	/**
+	 * F-Soft 在需要记录日志的Controller，使用@SysLog 标签，可实现日志记录
+	 * @author Fish(it.fish2010@foxmail.com)
+	 * @date 2019-12-11
+	 */
 	@Pointcut("@annotation(com.fsoft.core.annotation.SystemLog)")
 	public void logPointCut() {
 

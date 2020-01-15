@@ -2,7 +2,8 @@ package com.fsoft.core.utils;
 
 import java.util.HashMap;
 
-import com.alibaba.fastjson.JSON;
+import com.fsoft.core.common.serialize.Serializer;
+import com.fsoft.core.common.serialize.imp.FastJsonSerializeImp;
 
 /**
  * @package com.fsoft.core.utils
@@ -56,9 +57,10 @@ public class RetVo extends HashMap<String, Object> {
 		vo.put("msg", msg);
 		return vo;
 	}
+
 	/***
 	 * 数据查询，返回总数和数据列表 （layui支持count、data默认参数，自动分页）
-	 * @user Fish 
+	 * @user Fish
 	 * @date 2019-05-07
 	 * @param count
 	 * @param data
@@ -82,6 +84,12 @@ public class RetVo extends HashMap<String, Object> {
 
 	@Override
 	public String toString() {
-		return JSON.toJSONString(this);
+		return toString(serializer);
 	}
+
+	public String toString(Serializer serializer) {
+		return serializer.Serialize(this);
+	}
+
+	public static final Serializer serializer = new FastJsonSerializeImp();
 }

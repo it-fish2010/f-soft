@@ -13,14 +13,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-/**
- * 基础切面类
- * 
+/***
+ * F-Soft 基础切面类
  * @package com.fsoft.core.aop
- * @author fish
- * @email it_Fish@aliyun.com
- * @create 2019-10-09
- * @copyright 2009-2019
+ * @author Fish
+ * @email it.fish2010@foxmail.com
+ * @date 2019-12-11
+ * @CopyRight © F-Soft
  */
 @Aspect
 @Component
@@ -33,7 +32,6 @@ public class BaseAspect {
 
 	/***
 	 * 横切关注点 - 处理全局的请求绑定 by WGJ 主要用于实时更新 BaseController 的各项属性
-	 * 
 	 * @author Fish 2019-03-23
 	 * @param joinPoint
 	 * @throws Exception

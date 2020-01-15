@@ -6,13 +6,13 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 
-/**
+/***
+ * F-Soft 登录用户信息，实现SysUser信息复制
  * @package com.fsoft.core.common.base
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019-05-06
- * @copyright 2009-2019 <BR>
- *            登录用户信息，实现SysUser信息复制
+ * @date 2019-12-11
+ * @CopyRight © F-Soft
  */
 @SuppressWarnings("serial")
 public class UserVo implements Serializable {

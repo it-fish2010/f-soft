@@ -1,9 +1,13 @@
 package com.fsoft.core.common.base;
 
-/**
- * @author Administrator
- *
- */
+/*********
+ * F-Soft 登录的实体Bean
+ * @package com.fsoft.core.common.base
+ * @author Fish
+ * @email it.fish2010@foxmail.com
+ * @date 2019-12-11
+ * @CopyRight © F-Soft
+ **********/
 public class Login {
 	private String username;
 	private String password;
