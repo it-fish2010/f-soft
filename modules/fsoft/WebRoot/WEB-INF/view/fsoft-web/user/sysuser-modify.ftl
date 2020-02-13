@@ -20,7 +20,7 @@
 				  		<label for="loginAcct" class="layui-form-label">
 				  			<span class="x-red">*</span>登录名
 			  			</label>
-				      	<div class="layui-input-inline">
+				      	<div class="layui-input-block">
 				      		<input type="text" id="loginAcct" name="loginAcct" value="${user.loginAcct}" <#if user.id??>disabled</#if>  lay-verify="required" autocomplete="off" class="layui-input">
 				      	</div>
 				  	</div>
@@ -28,7 +28,7 @@
 				  		<label for="loginAcct" class="layui-form-label">
 				  			<span class="x-red">*</span>姓名
 			  			</label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                          <input type="text" id="userName" name="userName" value="${user.userName}" lay-verify="required" autocomplete="off" class="layui-input" lay-reqText="姓名必填">
 	                    </div>
 					</div>
@@ -36,7 +36,7 @@
 	              		<label for="L_role" class="layui-form-label">
 	              			<span class="x-red">*</span>角色
               			</label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                    	<div id="roleIdList" class="xm-select-demo"></div>
 	                	</div>
 	              	</div>
@@ -44,19 +44,19 @@
 	              		<label for="L_org" class="layui-form-label">
 	              			<span class="x-red">*</span>单位
               			</label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                    	<div id="xm-select-orgTrees" class="xm-select-demo"></div>
 	                	</div>
 	              	</div>
 	                <div class="layui-form-item">
 	                	<label for="phone" class="layui-form-label">手机</label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 							<input type="text" id="mobile" name="mobile" value="${user.mobile}" lay-verify="phone" autocomplete="off" class="layui-input" lay-reqText="请输入正确的手机号">
 	                  	</div>
 	              	</div>
 	              	<div class="layui-form-item">
 	              		<label for="L_email" class="layui-form-label">电子邮箱</label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                    	<input type="text" id="email" name="email" value="${user.email}" lay-verify="email" autocomplete="off" class="layui-input" lay-reqText="请输入正确的邮箱">
 	                	</div>
 	              	</div>
