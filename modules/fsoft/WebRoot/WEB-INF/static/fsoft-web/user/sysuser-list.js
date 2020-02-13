@@ -46,7 +46,7 @@ layui.use(['form','table','eleTree'], function() {
 		page : true,
 		limit : 20,
 		limits : [ 20, 30, 50, 100, 200],
-		height : 'full-167'
+		height : 'full-172'
 	});
 	//搜索监听
 	form.on('submit(sreach)', function(data){
@@ -57,9 +57,9 @@ layui.use(['form','table','eleTree'], function() {
 	table.on('tool(tbs)',function(obj){
 		var data = obj.data;
 		if(obj.event==='detail'){
-			xadmin.open(data.userName+'-详情',layui.cache['contentPath']+'/sys-user/info/'+data.id,500,510);
+			xadmin.open(data.userName+'-详情',layui.cache['contentPath']+'/sys-user/info/'+data.id,500,550);
 		}else if (obj.event==='edit'){
-			xadmin.open('编辑用户',layui.cache['contentPath']+'/sys-user/edit/'+data.id,500,510);
+			xadmin.open('编辑用户',layui.cache['contentPath']+'/sys-user/edit/'+data.id,500,550);
 		}else if (obj.event==='del'){
 			layer.confirm("确认要删除当前记录？", function(index) {
 				$.ajax({
@@ -119,7 +119,7 @@ layui.use(['form','table','eleTree'], function() {
 			});
 		},
 		add:function(){
-			xadmin.open('新增帐号',layui.cache['contentPath']+'/sys-user/add',500,510);
+			xadmin.open('新增帐号',layui.cache['contentPath']+'/sys-user/add',500,550);
 		},
 		refpwd:function(){
 			var checkStatus = table.checkStatus('table');

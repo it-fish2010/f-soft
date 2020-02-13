@@ -98,6 +98,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
 	/****
 	 * 根据用户ID标识，删除用户的角色关系
+	 * 
 	 * @user fish(it.fish2010@foxmail.com)
 	 * @date 2019-10-09
 	 * @param userid
@@ -164,7 +165,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 				continue;
 			user.setIsLock(Global.STATUS_YES);
 			if (OgnlUtils.isEmpty(user.getLockType()))
-				user.setLockType(SysUser.LOCK_TYPE_ADMIN);
+				user.setLockType(Global.LOCK_TYPE_ADMIN);
 			user.setLockTime(DateTimeUtils.getNowTime());
 			user.setModifyTime(DateTimeUtils.getNowTime());
 			updInt += userMapper.updateUserLock(user);

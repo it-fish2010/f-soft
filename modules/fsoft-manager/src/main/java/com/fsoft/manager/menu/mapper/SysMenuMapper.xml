@@ -40,7 +40,7 @@
   <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="sysMenuMap">
     <include refid="selectCols" />
     <include refid="queryWhere" />
-    ORDER BY T.PARENTS ASC,T.SORT_NO ASC
+    ORDER BY T.SORT_NO ASC,T.STD_CODE ASC,T.STD_NAME ASC 
   </select>
   <!-- 搜索数据区域 -->
   <sql id="queryWhere">

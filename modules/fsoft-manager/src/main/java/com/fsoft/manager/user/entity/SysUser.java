@@ -8,27 +8,6 @@ import com.fsoft.core.common.base.BaseVo;
 
 @SuppressWarnings("serial")
 public class SysUser extends BaseVo {
-	/***
-	 * 0-管理员手工加锁
-	 */
-	public static final Integer LOCK_TYPE_ADMIN = new Integer("0");
-	/**
-	 * 1-登录次数超限制
-	 */
-	public static final Integer LOCK_TYPE_LOGINTIMES = new Integer("1");
-	/***
-	 * 2-密码校验次数超限制
-	 */
-	public static final Integer LOCK_TYPE_PASSWORDTIMES = new Integer("2");
-	/**
-	 * 3-密码过期
-	 */
-	public static final Integer LOCK_TYPE_PASSWORDOVERTIME = new Integer("3");
-	/***
-	 * 4-帐号长期未使用
-	 */
-	public static final Integer LOCK_TYPE_NEVERLOGIN = new Integer("4");
-
 	private String loginAcct;
 	private String loginPwd;
 	private String userName;
@@ -42,11 +21,14 @@ public class SysUser extends BaseVo {
 	private Timestamp lockTime;
 
 	private String areaId;
+	private String areaCode;
 	private String areaName;
 
+	private String orgCode;
 	private String orgName;
 	// 默认皮肤;保存在用户信息中
 	private String theme;
+	private String imgPath;
 	private List<String> roleIdList = new ArrayList<String>();
 
 	public String getLoginAcct() {
@@ -151,6 +133,30 @@ public class SysUser extends BaseVo {
 
 	public void setTheme(String theme) {
 		this.theme = theme;
+	}
+
+	public String getAreaCode() {
+		return areaCode;
+	}
+
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
+	}
+
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 
 	public List<String> getRoleIdList() {

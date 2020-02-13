@@ -50,6 +50,7 @@ public class SysUserController extends BaseController {
 
 	/**
 	 * 所有用户列表
+	 * 
 	 * @user fish(it.fish2010@foxmail.com)
 	 * @date 2019-10-09
 	 * @param params
@@ -60,7 +61,7 @@ public class SysUserController extends BaseController {
 	@RequestMapping("/findList")
 	public RetVo findList(@RequestParam Map<String, Object> params) throws Exception {
 		QueryParam query = new QueryParam(params);
-		//非默认单位的时候，只允许查询本单位的用户
+		// 非默认单位的时候，只允许查询本单位的用户
 		String currOrgId = getUser().getCurrentOrgId();
 		if (OgnlUtils.isEmpty(params.get("orgId")) && !Global.DEFAULT_ORG_ID.equalsIgnoreCase(currOrgId))
 			query.setOrgId(currOrgId);
@@ -105,6 +106,7 @@ public class SysUserController extends BaseController {
 
 	/***
 	 * F-Soft 修改登录用户密码
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-12-11
 	 * @param password
@@ -138,6 +140,7 @@ public class SysUserController extends BaseController {
 
 	/**
 	 * F-Soft 用户详情
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-29
 	 * @param userId
@@ -154,6 +157,7 @@ public class SysUserController extends BaseController {
 
 	/***
 	 * F-Soft 保存用户(新增)
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-29
 	 * @param user
@@ -175,7 +179,7 @@ public class SysUserController extends BaseController {
 			user.setLoginPwd(Global.SYS_USER_DEFAULE_PWD);
 		if (OgnlUtils.isNotEmpty(user.getRoleIdList()))
 			user.setRoleIdList(buildStrList(user.getRoleIdList()));
-		//增加ORGID标识
+		// 增加ORGID标识
 		if (StringUtils.isEmpty(user.getOrgId()))
 			user.setOrgId(getUser().getCurrentOrgId());
 		try {
@@ -192,6 +196,7 @@ public class SysUserController extends BaseController {
 
 	/***
 	 * F-Soft 修改用户(更新)
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-29
 	 * @param user
@@ -234,7 +239,7 @@ public class SysUserController extends BaseController {
 					throw new Exception("不允许对自己加锁，请重新选择！");
 				SysUser user = new SysUser();
 				user.setId(id);
-				user.setLockType(SysUser.LOCK_TYPE_ADMIN);
+				user.setLockType(Global.LOCK_TYPE_ADMIN);
 				user.setLockTime(DateTimeUtils.getNowTime());
 				user.setModifyUserId(getUserId());
 				user.setModifyTime(DateTimeUtils.getNowTime());
@@ -249,6 +254,7 @@ public class SysUserController extends BaseController {
 
 	/*****
 	 * 账号解锁
+	 * 
 	 * @user fish(it.fish2010@foxmail.com)
 	 * @date 2019-10-10
 	 * @param ids
@@ -280,6 +286,7 @@ public class SysUserController extends BaseController {
 
 	/***
 	 * F-Soft 帐号启用
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-16
 	 * @param ids
@@ -308,6 +315,7 @@ public class SysUserController extends BaseController {
 
 	/***
 	 * F-Soft 帐号禁用
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-16
 	 * @param ids
@@ -336,6 +344,7 @@ public class SysUserController extends BaseController {
 
 	/**
 	 * 删除用户
+	 * 
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -355,6 +364,7 @@ public class SysUserController extends BaseController {
 
 	/**
 	 * 初始化密码
+	 * 
 	 * @throws Exception
 	 */
 	@ResponseBody

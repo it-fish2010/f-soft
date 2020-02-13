@@ -47,10 +47,16 @@
 	                        <input class="layui-input" type="text" id="sortNo" name="sortNo" value="${menu.sortNo}"  lay-verify="required|number">
 	                    </div>
 	                </div>
-	                 <div class="layui-form-item">
+                 	<div class="layui-form-item">
 	                    <label for="desc" class="layui-form-label">权限标识</label>
 	                    <div class="layui-input-block">
 	                        <input class="layui-input" type="text" id="perms" name="perms" value="${menu.perms}">
+	                    </div>
+	                </div>
+                 	<div class="layui-form-item">
+	                    <label for="desc" class="layui-form-label">图标</label>
+	                    <div class="layui-input-block">
+	                        <input class="layui-input" type="text" id="iconFonts" name="icon" lay-filter="iconFonts" value="${menu.icon}">
 	                    </div>
 	                </div>
 	                <div class="layui-form-item">
@@ -66,6 +72,8 @@
 	    layui.config({
 	    	base: '${request.contextPath}/plugins/layui/extend/',
 	    	contentPath: '${request.contextPath}'
+	    }).extend({
+	        IconFonts: 'iconFonts/iconFonts',
 	    });
 	</script>
 	<#-- 引入下拉多选的支持 -->

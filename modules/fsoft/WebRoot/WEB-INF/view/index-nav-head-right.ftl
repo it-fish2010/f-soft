@@ -14,11 +14,12 @@
 					<span>修改密码</span>
 				</a>
 			</dd>
+			<dd>
+				<a href="${request.contextPath}/logout">
+		        	<i class="fa fa-sign-out" aria-hidden="true"></i>
+		        	<span>退出</span>
+		    	</a>
+			</dd>
 		</dl>
 	</li>
-	<li class="layui-nav-item to-index">
-        <a href="${request.contextPath}/logout">
-        	<i class="fa fa-sign-out" aria-hidden="true"></i> 退出
-    	</a>
-    </li>
 </ul>

@@ -27,16 +27,27 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
 	private SysMenuMapper menuMapper;
 
 	@Override
-	public int save(SysMenu entity) throws Exception {
-		if (StringUtils.isBlank(entity.getId()))
-			entity.setId(UUIDUtils.randomUpperCaseId());
-		if (StringUtils.isBlank(entity.getParentId()))
-			entity.setParentId("0");
-		if (OgnlUtils.isEmpty(entity.getCreateTime()))
-			entity.setCreateTime(DateTimeUtils.getNowTime());
+	public int save(SysMenu param) throws Exception {
+		if (StringUtils.isBlank(param.getId()))
+			param.setId(UUIDUtils.randomUpperCaseId());
+		if (OgnlUtils.isEmpty(param.getCreateTime()))
+			param.setCreateTime(DateTimeUtils.getNowTime());
+		// 维护Parents 字符串
+		if (StringUtils.isBlank(param.getParentId())) {
+			param.setParents(param.getId());
+		} else {
+			SysMenu p_menu = getEntity(param.getParentId());
+			if (OgnlUtils.isNotEmpty(p_menu) && StringUtils.isNotBlank(p_menu.getParents()))
+				param.setParents(p_menu.getParents() + "_" + param.getId());
+		}
 		// 自动配置超级管理员与菜单的关联关系
-		menuMapper.insertMenuRole(UUIDUtils.randomUpperCaseId(), entity.getId(), Global.SYS_ROLE_ADMIN_ID);
-		return super.save(entity);
+		menuMapper.insertMenuRole(UUIDUtils.randomUpperCaseId(), param.getId(), Global.SYS_ROLE_ADMIN_ID);
+		return super.save(param);
+	}
+
+	@Override
+	public int modify(SysMenu param) throws Exception {
+		return super.modify(param);
 	}
 
 	@Override

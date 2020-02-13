@@ -6,6 +6,7 @@ layui.use([ 'form', 'table', 'eleTree' ], function() {
 	var menuTrees = eleTree.render({
 		elem : '#fsoft-menuTrees',
 		url: layui.cache['contentPath'] + '/sys-menu/findMenuTrees',
+		where:{menuTypeNotIn:2},
 		request: {name: "title",key: "id",children: "children"},
 		highlightCurrent:true,
 		defaultExpandAll:true,
@@ -19,7 +20,8 @@ layui.use([ 'form', 'table', 'eleTree' ], function() {
 	});
 	// 搜索监听
 	form.on('submit(sreach)', function(data) {
-		renderTreeTable(data.field);
+		table.reload('table-body',{where:data.field});
+		return false ;
 	});
 	// 工具栏监听 （批量操作）
 	var $ = layui.$, active = {

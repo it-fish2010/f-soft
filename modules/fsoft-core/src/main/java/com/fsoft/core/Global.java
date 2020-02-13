@@ -54,4 +54,25 @@ public class Global {
 	 * 菜单类型：按钮
 	 */
 	public static final Integer MENU_TYPE_BUTTON = new Integer("2");
+
+	/***
+	 * 0-管理员手工加锁
+	 */
+	public static final Integer LOCK_TYPE_ADMIN = new Integer("0");
+	/**
+	 * 1-登录次数超限制
+	 */
+	public static final Integer LOCK_TYPE_LOGINTIMES = new Integer("1");
+	/***
+	 * 2-密码校验次数超限制
+	 */
+	public static final Integer LOCK_TYPE_PASSWORDTIMES = new Integer("2");
+	/**
+	 * 3-密码过期
+	 */
+	public static final Integer LOCK_TYPE_PASSWORDOVERTIME = new Integer("3");
+	/***
+	 * 4-帐号长期未使用
+	 */
+	public static final Integer LOCK_TYPE_NEVERLOGIN = new Integer("4");
 }
