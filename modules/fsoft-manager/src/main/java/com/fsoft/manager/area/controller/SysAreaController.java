@@ -65,7 +65,7 @@ public class SysAreaController {
 	@RequestMapping("normalList/{parentAreaId}")
 	public RetVo normalList(@PathVariable String parentAreaId) throws Exception {
 		List<BaseData> list = new ArrayList<BaseData>();
-		List<SysArea> areaList = areaService.findAreaListByIsShow(parentAreaId, Global.STATE_YES);
+		List<SysArea> areaList = areaService.findAreaListByIsShow(parentAreaId, Global.STATUS_YES);
 		if (OgnlUtils.isNotEmpty(areaList)) {
 			for (SysArea ent : areaList) {
 				BaseData bean = new BaseData();
@@ -139,7 +139,7 @@ public class SysAreaController {
 		area.setAreaNamePy(pinyin);
 		// 设置排序
 		area.setSortNo(BigDecimal.ZERO);
-		area.setIsCity(Global.STATE_NO);
+		area.setIsCity(Global.STATUS_NO);
 
 		String parentId = area.getParentAreaId();
 

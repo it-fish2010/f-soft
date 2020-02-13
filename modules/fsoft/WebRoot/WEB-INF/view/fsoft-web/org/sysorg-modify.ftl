@@ -8,49 +8,36 @@
         <div class="layui-fluid">
 	        <div class="layui-row">
 	            <form class="layui-form layui-form-pane" action="" method="post">
-	            	<input type="hidden" name="id" id="id" value="${menu.id}"/>
+	            	<input class="layui-input" type="hidden" name="id" id="id" value="${model.id}"/>
+	            	<input class="layui-input" type="hidden" id="parentId" name="parentId" value="${model.parentId}">
 	                <div class="layui-form-item">
-	                    <label for="name" class="layui-form-label">
-	                        <span class="x-red">*</span>菜单类型
-	                    </label>
-	                    <div class="layui-input-inline">
-	                    	<select name="menuType" lay-filter="menu-menuType">
-	                    		<option value="0" <#if menu.menuType==0>selected</#if> >目录</option>
-	                    		<option value="1" <#if menu.menuType==1>selected</#if> >菜单</option>
-	                    		<option value="2" <#if menu.menuType==2>selected</#if> >按钮</option>
-	                    		<option value="3" <#if menu.menuType==3>selected</#if> >其他</option>
-	                    	</select>
+	                    <label for="name" class="layui-form-label">上级</label>
+	                    <div class="layui-input-block">
+	                    	<div id="xm-select-orgTrees" class="xm-select-demo"></div>
 	                    </div>
 	                </div>
 	                <div class="layui-form-item">
 	                    <label for="name" class="layui-form-label">
-	                    	上级目录
+	                    	<span class="x-red">*</span>组织编码
 	                    </label>
-	                    <div class="layui-input-inline">
-	                    	<input class="layui-input" type="hidden" id="parentId" name="parentId" value="${menu.parentId}">
-	                        <input class="layui-input" type="text" id="parentName" name="parentName" value="${menu.parentName}">
+	                    <div class="layui-input-block">
+	                    	<input class="layui-input" type="text" id="code" name="code" value="${model.code}" lay-verify="required" autocomplete="off">
 	                    </div>
 	                </div>
 	                <div class="layui-form-item">
 	                    <label for="name" class="layui-form-label">
-	                        <span class="x-red">*</span>菜单名称
+	                        <span class="x-red">*</span>组织名称
 	                    </label>
-	                    <div class="layui-input-inline">
-	                        <input class="layui-input" type="text" id="name" name="name" value="${menu.name}" required="" lay-verify="required" autocomplete="off">
+	                    <div class="layui-input-block">
+	                        <input class="layui-input" type="text" id="name" name="name" value="${model.name}" lay-verify="required" autocomplete="off">
 	                    </div>
 	                </div>
 	                <div class="layui-form-item">
 	                    <label for="name" class="layui-form-label">
 	                        <span class="x-red">*</span>排序
 	                    </label>
-	                    <div class="layui-input-inline">
-	                        <input class="layui-input" type="text" id="sortNo" name="sortNo" value="${menu.sortNo}"  lay-verify="required|number">
-	                    </div>
-	                </div>
-	                 <div class="layui-form-item">
-	                    <label for="desc" class="layui-form-label">权限标识</label>
-	                    <div class="layui-input-inline">
-	                        <input class="layui-input" type="text" id="perms" name="perms" value="${menu.perms}">
+	                    <div class="layui-input-block">
+	                        <input class="layui-input" type="text" id="sortNo" name="sortNo" value="${model.sortNo}"  lay-verify="required|number">
 	                    </div>
 	                </div>
 	                <div class="layui-form-item">
@@ -64,8 +51,11 @@
     </body>
     <script type="text/javascript">
 	    layui.config({
+	    	base: '${request.contextPath}/plugins/layui/extend/',
 	    	contentPath: '${request.contextPath}'
 	    });
 	</script>
-	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/menu/sysmenu-modify.js?v=201906"></script>
+	<#-- 引入下拉多选的支持 -->
+	<script type="text/javascript" src="${request.contextPath}/static/js/xm-select.js?v=202002"></script>
+	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/org/sysorg-modify.js?v=202002"></script>
 </html>

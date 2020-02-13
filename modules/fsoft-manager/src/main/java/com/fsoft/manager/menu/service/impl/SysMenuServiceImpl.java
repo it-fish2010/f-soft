@@ -34,7 +34,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
 			entity.setParentId("0");
 		if (OgnlUtils.isEmpty(entity.getCreateTime()))
 			entity.setCreateTime(DateTimeUtils.getNowTime());
-		//自动配置超级管理员与菜单的关联关系
+		// 自动配置超级管理员与菜单的关联关系
 		menuMapper.insertMenuRole(UUIDUtils.randomUpperCaseId(), entity.getId(), Global.SYS_ROLE_ADMIN_ID);
 		return super.save(entity);
 	}
@@ -47,6 +47,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
 
 	/***
 	 * F-Soft 把菜单对象SysMenu转换为Tree对象
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-04
 	 * @param list
@@ -67,6 +68,15 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
 			node.setHref(menu.getActionUrl());
 			node.setPerms(menu.getPerms());
 			trees.add(node);
+		}
+		// 维护Tree属性中的children
+		for (Tree tree : trees) {
+			List<Tree> chs = new ArrayList<Tree>();
+			for (Tree ch : trees) {
+				if (StringUtils.equals(tree.getId(), ch.getParentId()))
+					chs.add(ch);
+			}
+			tree.setChildren(chs);
 		}
 		return trees;
 	}

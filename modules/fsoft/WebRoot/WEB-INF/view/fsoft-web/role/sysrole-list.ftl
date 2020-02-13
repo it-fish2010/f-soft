@@ -12,13 +12,13 @@
                         <div class="layui-card-body">
                             <form class="layui-form" action="">
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="code"  placeholder="角色编号" autocomplete="off" class="layui-input">
+                                    <input type="text" name="code"  placeholder="角色编号精确搜索" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="name"  placeholder="角色名称" autocomplete="off" class="layui-input">
+                                    <input type="text" name="name"  placeholder="角色名称模糊搜索" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="sreach">
+                                    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach">
                                     	<i class="layui-icon layui-icon-search"></i>搜索
                                     </button>
                                 </div>
@@ -27,12 +27,12 @@
                         <div class="layui-card-body">
                         	<div class="layui-btn-group toolbar">
 	                        	<@perms value="sys:role:add">
-		                        	<button class="layui-btn layui-btn-normal" data-type="add">
+		                        	<button class="layui-btn layui-btn-sm layui-btn-normal" data-type="add">
 		                        		<i class="layui-icon layui-icon-add-circle"></i>新增
 		                    		</button>
 	                    		</@perms>
 	                        	<@perms value="sys:role:remove">
-								  	<button class="layui-btn layui-btn-danger" data-type="removeBatch">
+								  	<button class="layui-btn layui-btn-sm layui-btn-danger" data-type="removeBatch">
 								  		<i class="layui-icon layui-icon-delete"></i>删除
 								  	</button>
 	                    		</@perms>

@@ -21,7 +21,7 @@
 				  			<span class="x-red">*</span>登录名
 			  			</label>
 				      	<div class="layui-input-inline">
-				      		<input type="text" id="loginAcct" name="loginAcct" value="${user.loginAcct}" <#if user.id??>disabled</#if>  required="" lay-verify="required" autocomplete="off" class="layui-input">
+				      		<input type="text" id="loginAcct" name="loginAcct" value="${user.loginAcct}" <#if user.id??>disabled</#if>  lay-verify="required" autocomplete="off" class="layui-input">
 				      	</div>
 				  	</div>
 				  	<div class="layui-form-item">
@@ -33,7 +33,7 @@
 	                    </div>
 					</div>
 					<div class="layui-form-item">
-	              		<label for="L_email" class="layui-form-label">
+	              		<label for="L_role" class="layui-form-label">
 	              			<span class="x-red">*</span>角色
               			</label>
 	                    <div class="layui-input-inline">
@@ -41,11 +41,11 @@
 	                	</div>
 	              	</div>
 					<div class="layui-form-item">
-	              		<label for="L_email" class="layui-form-label">
+	              		<label for="L_org" class="layui-form-label">
 	              			<span class="x-red">*</span>单位
               			</label>
 	                    <div class="layui-input-inline">
-	                    	<div id="orgTrees" class="xm-select-demo"></div>
+	                    	<div id="xm-select-orgTrees" class="xm-select-demo"></div>
 	                	</div>
 	              	</div>
 	                <div class="layui-form-item">
@@ -65,15 +65,15 @@
 	                    <div class="layui-input-inline">
 	                    	<input type="password" id="password" name="loginPwd" value="" autocomplete="off" class="layui-input">
 	                  	</div>
-	                  	<div class="layui-input-inline">
+	                  	<div class="layui-form-mid layui-word-aux">
 	                  		<#if (user.id)??>
-	                  			<font color="red" style="font-size:12px">密码如果不需要修改，可不填</font>
+	                  			<font color="red" style="font-size:12px">如果不需要修改，可不填</font>
                   			<#else>
-	                  			<font color="red" style="font-size:12px">默认密码123456，可修改</font>
+	                  			<font color="red" style="font-size:12px">默认密码123456</font>
               				</#if>
 	                  	</div>
 	              	</div>
-	                <div class="layui-form-item">
+	                <div class="layui-form-item layui-col-md4 layui-col-md-offset4">
 	                	<button  class="layui-btn layui-btn-normal" lay-filter="save" lay-submit="">
 	                      	<i class="fa fa-save" aria-hidden="true" ></i> 保存
                       	</button>
@@ -84,10 +84,11 @@
 	</body>
     <script type="text/javascript">
 	    layui.config({
+	    	base:'${request.contextPath}'+'/plugins/layui/extend/',
 	    	contentPath: '${request.contextPath}'
 	    });
 	</script>
-	<#-- 引入下拉多选的支持(角色) -->
+	<#-- 引入下拉多选的支持 -->
 	<script type="text/javascript" src="${request.contextPath}/static/js/xm-select.js?v=201910"></script>
 	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/user/sysuser-modify.js?v=201910"></script>
 

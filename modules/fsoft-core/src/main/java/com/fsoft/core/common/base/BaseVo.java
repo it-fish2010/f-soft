@@ -1,12 +1,14 @@
 package com.fsoft.core.common.base;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import com.alibaba.fastjson.JSON;
 
 /**
  * F-Soft 基础的数据Bean
+ * 
  * @package com.fsoft.core.common.base
  * @author Fish
  * @email it.fish2010@foxmail.com
@@ -18,6 +20,15 @@ public class BaseVo implements Serializable {
 	private String id;
 	private String code;
 	private String name;
+	/**
+	 * 排序
+	 */
+	private BigDecimal sortNo;
+	/**
+	 * 状态
+	 */
+	private Integer status;
+
 	private String orgId;
 	private String createUserId;
 	private Timestamp createTime;
@@ -46,6 +57,22 @@ public class BaseVo implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public BigDecimal getSortNo() {
+		return sortNo;
+	}
+
+	public void setSortNo(BigDecimal sortNo) {
+		this.sortNo = sortNo;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getOrgId() {

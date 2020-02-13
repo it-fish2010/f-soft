@@ -295,7 +295,7 @@ public class SysUserController extends BaseController {
 			for (String id : ids) {
 				SysUser entity = new SysUser();
 				entity.setId(id);
-				entity.setStatus(Global.STATE_YES);
+				entity.setStatus(Global.STATUS_YES);
 				entity.setModifyUserId(getUserId());
 				entity.setModifyTime(DateTimeUtils.getNowTime());
 				userService.modify(entity);
@@ -323,7 +323,7 @@ public class SysUserController extends BaseController {
 			for (String id : ids) {
 				SysUser entity = new SysUser();
 				entity.setId(id);
-				entity.setStatus(Global.STATE_NO);
+				entity.setStatus(Global.STATUS_NO);
 				entity.setModifyUserId(getUserId());
 				entity.setModifyTime(DateTimeUtils.getNowTime());
 				userService.modify(entity);

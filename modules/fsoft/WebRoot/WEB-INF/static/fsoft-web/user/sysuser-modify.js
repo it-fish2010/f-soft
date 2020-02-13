@@ -1,21 +1,8 @@
 layui.use([ 'form', 'layer' ], function() {
-	var form = layui.form, layer = layui.layer;
+	var form  = layui.form, 
+	    layer = layui.layer;
 	var id = $('#id').val();
 	var roleIds = $('#currUserRoleId').val();
-	// 自定义验证规则
-	form.verify({
-		userName : function(value) {
-			if (value.length < 2) {
-				return '姓名至少2个字符';
-			}
-		},
-		pass : [ /(.+){6,20}$/, '密码必须6到12位' ],
-		repass : function(value) {
-			if ($('#L_pass').val() != $('#L_repass').val()) {
-				return '两次密码不一致';
-			}
-		}
-	});
 	//查询当前登录用户已有的角色列表,加载到角色的下拉列表中
 	$.post(layui.cache['contentPath']+"/sys-role/findRoleListByUser", {}, function(data) {
 		data = eval('('+data+')');
@@ -28,12 +15,31 @@ layui.use([ 'form', 'layer' ], function() {
 			    data: data.data,
 			    paging: true,
 			    pageSize:5,
-			    size:'small',
+			    size:'medium',
 			    name:"roleIdList"
 			});
 		}
 	});
 
+	//组织机构列表
+	$.post(layui.cache['contentPath']+"/sys-org/findList", {}, function(data) {
+		data = eval('('+data+')');
+		if(data.code=="0"){
+			var demo2 = xmSelect.render({
+			    el: '#xm-select-orgTrees',
+			    initValue:[$('#orgId').val()],
+			    prop:{name:'name',value:'id'},
+			    theme:{color:'#0081ff'},
+			    data: data.data,
+			    paging: true,
+			    pageSize:5,
+			    radio:true,
+			    size:'medium',
+			    name:"orgId"
+			});
+		}
+	});
+	
 	// 监听提交
 	form.on('submit(save)', function(data) {
 		var submitUrl = layui.cache['contentPath']+'/sys-user/save';

@@ -2,11 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fsoft.core.common.base.BaseMapper">
-    <resultMap id="baseVoMap" type="com.fsoft.core.common.base.BaseVo">
-        <!-- 创建时间/修改时间 -->
-        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR" />
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
-        <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR" />
-        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP" />
-    </resultMap>
+  <resultMap id="baseMap" type="com.fsoft.core.common.base.BaseVo">
+    <id property="id" column="RWID" jdbcType="VARCHAR" />
+    <result property="code" column="STD_CODE" jdbcType="VARCHAR" />
+    <result property="name" column="STD_NAME" jdbcType="VARCHAR" />
+    <result property="status" column="STATUS" jdbcType="DECIMAL" />
+    <!-- 创建时间/修改时间 -->
+    <result property="createUserId" column="CREATE_USER_ID" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+    <result property="modifyUserId" column="MODIFY_USER_ID" jdbcType="VARCHAR" />
+    <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- 树形结构实体Bean -->
+  <resultMap type="com.fsoft.core.common.base.BaseTreeVo" id="baseTreeMap" extends="baseMap">
+    <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+    <result property="parents" column="PARENTS" jdbcType="VARCHAR" />
+  </resultMap>
 </mapper> 

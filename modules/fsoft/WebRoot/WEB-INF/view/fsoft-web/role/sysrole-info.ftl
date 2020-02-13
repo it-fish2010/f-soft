@@ -29,9 +29,9 @@
 	                        <input type="text" id="name" name="name" value="${role.name}" class="layui-input" disabled>
 	                    </div>
 	                </div>
-	                <div class="layui-form-item">
-	                    <label for="desc" class="layui-form-label">权限设置</label>
-	                    <div class="layui-input-block" style="width: 280px; height: 440px; overflow: auto;">
+	                <div class="layui-form-item layui-form-text">
+	                    <label for="desc" class="layui-form-label" style="width: 300px;">权限设置</label>
+	                    <div class="layui-input-block" style="width: 300px; height: 420px; overflow: auto;">
 	                    	<ul class="dtree" name="menus" id="roleMenuTree" data-id="0"></ul>
 	                    </div>
 	                </div>

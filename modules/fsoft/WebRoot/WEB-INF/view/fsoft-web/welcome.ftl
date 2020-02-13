@@ -26,15 +26,15 @@
                 <div class="layui-col-sm6 layui-col-md3">
                     <div class="layui-card">
                         <div class="layui-card-header">
-                        	帐号状态情况 <span class="layui-badge layui-bg-cyan layuiadmin-badge">全部</span>
+                        	已锁定帐号 <span class="layui-badge layui-bg-cyan layuiadmin-badge">全部</span>
                         </div>
                         <div class="layui-card-body">
-                            <p class="layuiadmin-big-font">${user.userLock}</p>
-                            <p>新下载
-                                <span class="layuiadmin-span-color">10%
-                                    <i class="layui-inline layui-icon layui-icon-face-smile-b"></i>
-                                </span>
-                            </p>
+                        	<span class="layui-badge layui-bg-orange">${user.userLock}</span>
+                        	<p class="layuiadmin-big-font">
+                        		<span class="layuiadmin-span-color">
+                        			<i class="fa fa-address-book-o" aria-hidden="true" ></i>
+                        		</span>
+                        	</p>
                         </div>
                     </div>
                 </div>
@@ -79,12 +79,14 @@
                                 <tbody>
                                     <tr>
                                         <th>版权所有</th>
-                                        <td>xuebingsi(xuebingsi)
-                                            <a href="http://x.xuebingsi.com/" target="_blank">访问官网</a></td>
+                                        <td>F-Soft (it.fish2010@foxmail.com)
+                                            <a href="https://gitee.com/it_software/f-soft" target="_blank">F-Soft脚手架</a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>开发者</th>
-                                        <td>马志斌(113664000@qq.com)</td></tr>
+                                        <td>Fish-LC(it.fish2010@foxmail.com)</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -95,15 +97,17 @@
                         <div class="layui-card-header">开发团队</div>
                         <div class="layui-card-body ">
                             <table class="layui-table">
-                                <tbody>
+                               <tbody>
                                     <tr>
                                         <th>版权所有</th>
-                                        <td>xuebingsi(xuebingsi)
-                                            <a href="http://x.xuebingsi.com/" target="_blank">访问官网</a></td>
+                                        <td>F-Soft (it.fish2010@foxmail.com)
+                                            <a href="https://gitee.com/it_software/f-soft" target="_blank">F-Soft脚手架</a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>开发者</th>
-                                        <td>马志斌(113664000@qq.com)</td></tr>
+                                        <td>Fish-LC(it.fish2010@foxmail.com)</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

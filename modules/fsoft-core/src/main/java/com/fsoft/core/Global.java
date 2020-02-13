@@ -1,13 +1,14 @@
 package com.fsoft.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import com.alibaba.fastjson.JSON;
-
+/**
+ * F-Soft 静态变量工具类
+ * 
+ * @package com.fsoft.core
+ * @author Fish
+ * @email it.fish2010@foxmail.com
+ * @date 2020-02-13
+ * @CopyRight © F-Soft
+ **/
 public class Global {
 	/**
 	 * 超级管理员 角色ID
@@ -37,8 +38,8 @@ public class Global {
 	public static final String YES = "1";
 	public static final String NO = "0";
 
-	public static final Integer STATE_YES = new Integer(YES);
-	public static final Integer STATE_NO = new Integer(NO);
+	public static final Integer STATUS_YES = new Integer(YES);
+	public static final Integer STATUS_NO = new Integer(NO);
 
 	/**
 	 * 菜单类型：目录
@@ -53,54 +54,4 @@ public class Global {
 	 * 菜单类型：按钮
 	 */
 	public static final Integer MENU_TYPE_BUTTON = new Integer("2");
-
-	/**
-	 * 云服务商
-	 */
-	public enum CloudService {
-		/**
-		 * 七牛云
-		 */
-		QINIU(1),
-		/**
-		 * 阿里云
-		 */
-		ALIYUN(2),
-		/**
-		 * 腾讯云
-		 */
-		QCLOUD(3);
-
-		private int value;
-
-		private CloudService(int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return value;
-		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		String[] nums = new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18",
-				"19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33" };
-		int k = 0;
-		List<String> rs = new ArrayList<String>();
-		List<String> ls = Arrays.asList(nums);
-		while (k <= 100) {
-			int idx = new Random().nextInt(ls.size() - 1);
-			String ch = ls.get(idx);
-			if (rs.size() > 0 && JSON.toJSONString(rs).indexOf(ch) > -1)
-				continue;
-			rs.add(ch);
-			if (rs.size() % 6 == 0) {
-				k++;
-				Collections.sort(rs);
-				System.out.println(JSON.toJSONString(rs));
-				rs = new ArrayList<String>();
-			}
-		}
-	}
-
 }

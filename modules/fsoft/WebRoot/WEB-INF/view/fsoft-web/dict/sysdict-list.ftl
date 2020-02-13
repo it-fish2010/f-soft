@@ -27,24 +27,24 @@
                         <div class="layui-card-body ">
                         	<div class="layui-btn-group toolbar">
 	                        	<@perms value="sys:dict:save">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="add">
+		                        	<button class="layui-btn layui-btn-normal" data-type="add">
 		                        		<i class="fa fa-plus-circle" aria-hidden="true" ></i> 新增
 		                    		</button>
 	                    		</@perms>
 	                        	<@perms value="sys:dict:remove">
-								  	<button class="layui-btn layui-btn-sm  layui-btn-danger" data-type="removeBatch">
+								  	<button class="layui-btn layui-btn-danger" data-type="removeBatch">
 								  		<i class="layui-icon layui-icon-delete"></i>删除
 								  	</button>
 	                    		</@perms>
                     		</div>
                         	<div class="layui-btn-group toolbar">
                         		<@perms value="sys:dict:enable">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="enable">
+		                        	<button class="layui-btn layui-btn-normal" data-type="enable">
 	   									<i class="fa fa-play-circle" aria-hidden="true" ></i> 启用
 		                    		</button>
 	                    		</@perms>
                         		<@perms value="sys:dict:disable">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="disable">
+		                        	<button class="layui-btn layui-btn-normal" data-type="disable">
 	   									<i class="fa fa-minus-circle" aria-hidden="true" ></i> 禁用
 		                    		</button>
 	                    		</@perms>

@@ -8,9 +8,16 @@ layui.use(['form','table','eleTree'], function() {
 		url: layui.cache['contentPath'] + '/sys-org/findOrgTrees',
 		request: {name: "title",key: "id",children: "children"},
 		highlightCurrent:true,
-		defaultExpandAll:true
+		defaultExpandAll:true,
+		expandOnClickNode:false,
+		showLine:true
 	});
-	// 第一个实例
+	// 节点点击事件
+	eleTree.on("nodeClick(fsoft-orgTree)",function(d) {
+	    var currentData = d.data.currentData;
+	    table.reload('table',{where: {orgId:currentData.id}});
+	});
+	//用户列表初始化
 	table.render({
 		elem : '#table',
 		url : layui.cache['contentPath'] + '/sys-user/findList',
@@ -38,7 +45,7 @@ layui.use(['form','table','eleTree'], function() {
 			]],
 		page : true,
 		limit : 20,
-		limits : [ 20, 30, 50, 100, 200, 500 ],
+		limits : [ 20, 30, 50, 100, 200],
 		height : 'full-167'
 	});
 	//搜索监听
@@ -50,9 +57,9 @@ layui.use(['form','table','eleTree'], function() {
 	table.on('tool(tbs)',function(obj){
 		var data = obj.data;
 		if(obj.event==='detail'){
-			xadmin.open('编辑用户',layui.cache['contentPath']+'/sys-user/info/'+data.id,435,500);
+			xadmin.open(data.userName+'-详情',layui.cache['contentPath']+'/sys-user/info/'+data.id,500,510);
 		}else if (obj.event==='edit'){
-			xadmin.open('编辑用户',layui.cache['contentPath']+'/sys-user/edit/'+data.id,435,500);
+			xadmin.open('编辑用户',layui.cache['contentPath']+'/sys-user/edit/'+data.id,500,510);
 		}else if (obj.event==='del'){
 			layer.confirm("确认要删除当前记录？", function(index) {
 				$.ajax({
@@ -112,7 +119,7 @@ layui.use(['form','table','eleTree'], function() {
 			});
 		},
 		add:function(){
-			xadmin.open('新增用户帐号',layui.cache['contentPath']+'/sys-user/add',435,500);
+			xadmin.open('新增帐号',layui.cache['contentPath']+'/sys-user/add',500,510);
 		},
 		refpwd:function(){
 			var checkStatus = table.checkStatus('table');
@@ -239,7 +246,7 @@ layui.use(['form','table','eleTree'], function() {
 					success:function(rs){
 						rs = eval('('+rs+')');
 						if(rs.code==0){
-							layer.msg("启用成功",{icon:1,time:3000});
+							layer.msg("禁用成功",{icon:1,time:3000});
 							table.reload('table',{where:data.field});
 						}else{
 							layer.alert(rs.msg);

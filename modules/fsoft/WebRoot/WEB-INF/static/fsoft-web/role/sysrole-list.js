@@ -58,7 +58,7 @@ layui.use(['laydate','form','table'], function() {
 	table.on('tool(sysrole-tabs)',function(obj){
 		var data = obj.data;
 		if(obj.event==='permission'){ //查看详情
-			xadmin.open('角色管理-设置权限',layui.cache['contentPath']+'/sys-role/info/'+data.id,520,768);
+			xadmin.open('角色管理-设置权限',layui.cache['contentPath']+'/sys-role/info/'+data.id,520,700);
 		}else if (obj.event==='edit'){ //编辑
 			xadmin.open('编辑角色',layui.cache['contentPath']+'/sys-role/edit/'+data.id,400,430);
 		}else if (obj.event==='del'){ //删除

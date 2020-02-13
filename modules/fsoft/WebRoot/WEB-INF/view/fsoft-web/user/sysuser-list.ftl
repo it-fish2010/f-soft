@@ -12,7 +12,7 @@
             	<div class="layui-col-md2">
             		<div class="layui-card">
             			<div class="layui-card-body">
-            				<div id="fsoft-orgTree" style="height: 800px; overflow: scroll;"></div>
+            				<div id="fsoft-orgTree" lay-filter="fsoft-orgTree" class="fsoft-trees"></div>
             			</div>
             		</div>
             	</div>
@@ -36,37 +36,37 @@
                         <div class="layui-card-body ">
                         	<div class="layui-btn-group toolbar">
 	                        	<@perms value="sys:user:add">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="add">
+		                        	<button class="layui-btn layui-btn-normal" data-type="add">
 		                        		<i class="fa fa-user-plus" aria-hidden="true" ></i> 新增
 		                    		</button>
 	                    		</@perms>
 	                        	<@perms value="sys:user:remove">
-								  	<button class="layui-btn layui-btn-sm  layui-btn-danger" data-type="removeBatch">
+								  	<button class="layui-btn  layui-btn-danger" data-type="removeBatch">
 								  		<i class="layui-icon layui-icon-delete"></i>删除
 								  	</button>
 	                    		</@perms>
                     		</div>
                         	<div class="layui-btn-group toolbar">
-	                        	<button class="layui-btn layui-btn-sm layui-btn-normal" data-type="refpwd">
+	                        	<button class="layui-btn layui-btn-normal" data-type="refpwd">
 	                        		<i class="fa fa-key" aria-hidden="true" ></i> 修改密码
 	                    		</button>
                     		</div>
                         	<div class="layui-btn-group toolbar">
                         		<@perms value="sys:user:enable">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="enable">
+		                        	<button class="layui-btn  layui-btn-normal" data-type="enable">
 	   									<i class="fa fa-play-circle" aria-hidden="true" ></i> 启用
 		                    		</button>
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="disable">
+		                        	<button class="layui-btn  layui-btn-normal" data-type="disable">
 	   									<i class="fa fa-minus-circle" aria-hidden="true" ></i> 禁用
 		                    		</button>
 	                    		</@perms>
                         		<@perms value="sys:user:lock">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="lock">
+		                        	<button class="layui-btn  layui-btn-normal" data-type="lock">
 										<i class="fa fa-lock" aria-hidden="true" ></i> 加锁
 		                    		</button>
 	                    		</@perms>
                         		<@perms value="sys:user:unlock">
-		                        	<button class="layui-btn layui-btn-sm  layui-btn-normal" data-type="unlock">
+		                        	<button class="layui-btn  layui-btn-normal" data-type="unlock">
 	   									<i class="fa fa-unlock" aria-hidden="true" ></i> 解锁
 		                    		</button>
 	                    		</@perms>
@@ -80,13 +80,13 @@
     </body>
     <script type="text/javascript">
 	    layui.config({
-	    	base:'${request.contextPath}'+'/plugins/layui/extend/',
+	    	base: '${request.contextPath}/plugins/layui/extend/',
 	    	contentPath: '${request.contextPath}'
 	    }).extend({
 	    	eleTree:'eleTree/eleTree'
 	    });
 	</script>
-	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/user/sysuser-list.js?v=201910"></script>
+	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/user/sysuser-list.js?v=202002"></script>
 	<#-- 每一行最后一列的“操作” -->
 	<script type="text/html" id="tbRowBar">
 		<@perms value="sys:user:info">

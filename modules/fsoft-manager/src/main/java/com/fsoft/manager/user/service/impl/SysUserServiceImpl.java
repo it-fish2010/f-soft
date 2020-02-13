@@ -86,9 +86,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 		if (OgnlUtils.isEmpty(entity.getCreateTime()))
 			entity.setCreateTime(DateTimeUtils.getNowTime());
 		if (OgnlUtils.isEmpty(entity.getStatus()))
-			entity.setStatus(Global.STATE_YES); // 默认启用
+			entity.setStatus(Global.STATUS_YES); // 默认启用
 		if (OgnlUtils.isEmpty(entity.getIsLock()))
-			entity.setIsLock(Global.STATE_NO); // 默认未加锁
+			entity.setIsLock(Global.STATUS_NO); // 默认未加锁
 
 		if (OgnlUtils.isNotEmpty(entity.getRoleIdList())) {
 			userMapper.insertBatchUserRole(entity);
@@ -162,7 +162,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 		for (SysUser user : userList) {
 			if (OgnlUtils.isEmpty(user.getId()))
 				continue;
-			user.setIsLock(Global.STATE_YES);
+			user.setIsLock(Global.STATUS_YES);
 			if (OgnlUtils.isEmpty(user.getLockType()))
 				user.setLockType(SysUser.LOCK_TYPE_ADMIN);
 			user.setLockTime(DateTimeUtils.getNowTime());
@@ -178,7 +178,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 		for (SysUser user : userList) {
 			if (OgnlUtils.isEmpty(user.getId()))
 				continue;
-			user.setIsLock(Global.STATE_NO);
+			user.setIsLock(Global.STATUS_NO);
 			user.setLockType(null);
 			user.setLockTime(null);
 			user.setModifyTime(DateTimeUtils.getNowTime());

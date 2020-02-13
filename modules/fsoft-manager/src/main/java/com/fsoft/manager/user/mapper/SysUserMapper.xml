@@ -27,36 +27,37 @@
     </resultMap>
 
     <sql id="selectCols">
-        SELECT T.RWID,
-               T.LOGIN_ACCT,
-               T.LOGIN_PWD,
-               T.USER_NAME,
-               T.EMAIL,
-               T.MOBILE,
-               T.STATUS,
-               T.IS_LOCK,
-               T.LOCK_TYPE,
-               T.LOCK_TIME,
-               T.ORG_ID,
-               SO.ORG_NAME      AS ORG_NAME,
-               T.AREA_ID        AS SYS_AREA_ID,
-               SA.AREA_NAME     AS SYS_AREA_NAME,
-               T.THEME,
-               T.CREATE_USER_ID,
-               T.CREATE_TIME,
-               T.MODIFY_USER_ID,
-               T.MODIFY_TIME
-          FROM SYS_USER T
-          LEFT JOIN SYS_ORGANIZE SO ON SO.RWID = T.ORG_ID
-          LEFT JOIN SYS_AREA SA     ON SA.RWID = T.AREA_ID
+      SELECT T.RWID,
+             T.LOGIN_ACCT,
+             T.LOGIN_PWD,
+             T.USER_NAME,
+             T.EMAIL,
+             T.MOBILE,
+             T.STATUS,
+             T.IS_LOCK,
+             T.LOCK_TYPE,
+             T.LOCK_TIME,
+             T.ORG_ID,
+             SO.STD_CODE      AS ORG_CODE,
+             SO.STD_NAME      AS ORG_NAME,
+             T.AREA_ID        AS SYS_AREA_ID,
+             SA.AREA_NAME     AS SYS_AREA_NAME,
+             T.THEME,
+             T.CREATE_USER_ID,
+             T.CREATE_TIME,
+             T.MODIFY_USER_ID,
+             T.MODIFY_TIME
+        FROM SYS_USER T
+        LEFT JOIN SYS_ORGANIZE SO ON SO.RWID = T.ORG_ID
+        LEFT JOIN SYS_AREA SA     ON SA.RWID = T.AREA_ID
     </sql>
     <sql id="queryWhere">
         <trim prefix="WHERE" prefixOverrides="AND|OR">
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(createUserId)">
-                AND T.create_user_id = #{createUserId}
+                AND T.CREATE_USER_ID = #{createUserId}
             </if>
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(loginAcct)">
-                AND T.login_acct=#{loginAcct,jdbcType=VARCHAR}
+                AND T.LOGIN_ACCT=#{loginAcct,jdbcType=VARCHAR}
             </if>
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(userName)">
                 and t.USER_NAME like concat('%',#{userName},'%')
@@ -80,7 +81,7 @@
     <select id="selectSum" parameterType="java.lang.String" resultType="java.util.Map">
         SELECT COUNT(1) AS userTotal,
         SUM(CASE WHEN STATUS = 1 THEN 1 ELSE 0 END) AS userStatusYes,
-        SUM(CASE WHEN STATUS != 1 THEN 0 ELSE 1 END) AS userStatusNo,
+        SUM(CASE WHEN STATUS = 0 THEN 1 ELSE 0 END) AS userStatusNo,
         SUM(CASE WHEN IS_LOCK = 1 THEN 1 ELSE 0 END ) AS userLock
         FROM SYS_USER
         WHERE LOGIN_ACCT != 'admin'
@@ -99,14 +100,7 @@
     <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="ResultMap">
         <include refid="selectCols" />
         <include refid="queryWhere" />
-        <choose>
-            <when test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sidx)">
-                order by ${sidx} ${order}
-            </when>
-            <otherwise>
-                ORDER BY CREATE_TIME DESC
-            </otherwise>
-        </choose>
+        ORDER BY T.CREATE_TIME DESC,T.LOGIN_ACCT ASC 
     </select>
 
     <insert id="insert" parameterType="com.fsoft.manager.user.entity.SysUser">
@@ -136,6 +130,9 @@
             </if>
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(loginPwd)">
                 login_pwd = #{loginPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(orgId)">
+                ORG_ID = #{orgId,jdbcType=VARCHAR},
             </if>
             <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(userName)">
                 USER_NAME = #{userName,jdbcType=VARCHAR},

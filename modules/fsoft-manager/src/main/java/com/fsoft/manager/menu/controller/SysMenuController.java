@@ -28,9 +28,12 @@ import com.fsoft.core.utils.tree.BuildTree;
 import com.fsoft.core.utils.tree.Tree;
 import com.fsoft.manager.menu.entity.SysMenu;
 import com.fsoft.manager.menu.service.SysMenuService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 /**
  * F-Soft 菜单管理Controller，实现对菜单、目录的维护
+ * 
  * @package com.fsoft.manager.menu.controller
  * @author Fish
  * @email it.fish2010@foxmail.com
@@ -45,6 +48,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 跳转到
+	 * 
 	 * @user Fish
 	 * @date 2019-05-09
 	 * @return
@@ -58,6 +62,7 @@ public class SysMenuController extends BaseController {
 
 	/****
 	 * F-Soft 菜单列表查看
+	 * 
 	 * @author Fish it.fish2010@foxmail.com
 	 * @date 2019-11-01
 	 * @param params
@@ -66,14 +71,25 @@ public class SysMenuController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/findList")
-	public List<SysMenu> findList(@RequestParam Map<String, Object> params) throws Exception {
+	public RetVo findList(@RequestParam Map<String, Object> params) throws Exception {
 		QueryParam query = new QueryParam(params);
+		Page<SysMenu> page = PageHelper.startPage(query.getPage(), query.getLimit());
 		List<SysMenu> list = sysMenuService.findList(query);
-		return list;
+		return RetVo.ok(page.getTotal(), list);
+	}
+
+	@ResponseBody
+	@RequestMapping("/findMenuTrees")
+	public RetVo findMenuTrees(@RequestParam Map<String, Object> params) throws Exception {
+		QueryParam queryParam = new QueryParam(params);
+		queryParam.put("userId", getUserId());
+		List<Tree> trees = sysMenuService.findMenuTrees(queryParam);
+		return RetVo.ok(trees.size(), BuildTree.buildJsonArray(trees));
 	}
 
 	/***
 	 * F-Soft 跳转到菜单详情页面
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param menuId
@@ -90,6 +106,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 页面跳转，跳转到菜单/目录的表单填写页面
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @return
@@ -102,6 +119,7 @@ public class SysMenuController extends BaseController {
 
 	/**
 	 * F-Soft 跳转到菜单编辑页面
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param request
@@ -120,6 +138,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 响应菜单新增的保存操作
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param menu
@@ -138,6 +157,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 响应菜单编辑/修改的保存操作
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param menu
@@ -161,6 +181,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 响应菜单删除的操作，支持批量删除
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param menuIds
@@ -184,6 +205,7 @@ public class SysMenuController extends BaseController {
 
 	/**
 	 * F-Soft 响应前端请求-获取当前登录用户的所有目录、菜单的列表，用于组装首页的功能导航菜单
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @return
@@ -198,6 +220,7 @@ public class SysMenuController extends BaseController {
 
 	/***
 	 * F-Soft 菜单的表单数据校验
+	 * 
 	 * @author Fish(it.fish2010@foxmail.com)
 	 * @date 2019-11-02
 	 * @param menu
@@ -213,12 +236,13 @@ public class SysMenuController extends BaseController {
 			SysMenu parentMenu = sysMenuService.getEntity(menu.getParentId());
 			if (OgnlUtils.isEmpty(parentMenu))
 				throw new RRException("无法识别上级菜单/目录标识（" + menu.getParentId() + "）");
-			//目录、菜单的上级，只允许是“目录”。
+			// 目录、菜单的上级，只允许是“目录”。
 			if (menu.getMenuType() == Global.MENU_TYPE_CATALOG || menu.getMenuType() == Global.MENU_TYPE_MENU) {
 				if (parentMenu.getMenuType() != Global.MENU_TYPE_CATALOG) {
 					throw new RRException("上级菜单只能为目录类型");
 				}
-			} else if (menu.getMenuType() == Global.MENU_TYPE_BUTTON && parentMenu.getMenuType() == Global.MENU_TYPE_BUTTON) {
+			} else if (menu.getMenuType() == Global.MENU_TYPE_BUTTON
+					&& parentMenu.getMenuType() == Global.MENU_TYPE_BUTTON) {
 				throw new RRException("按钮的上级菜单不允许是按钮");
 			}
 		}

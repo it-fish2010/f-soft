@@ -2,7 +2,7 @@ package com.fsoft.core.dict.entity;
 
 import org.springframework.stereotype.Repository;
 
-import com.fsoft.core.common.base.BaseVo;
+import com.fsoft.core.common.base.BaseTreeVo;
 
 /**
  * 字典配置项明细表
@@ -14,7 +14,7 @@ import com.fsoft.core.common.base.BaseVo;
  **/
 @SuppressWarnings("serial")
 @Repository
-public class SysDictItem extends BaseVo {
+public class SysDictItem extends BaseTreeVo {
 
 	private String dictId;
 	private String dictCode;

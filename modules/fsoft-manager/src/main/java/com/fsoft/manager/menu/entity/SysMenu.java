@@ -6,10 +6,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.fsoft.core.common.base.BaseVo;
+import com.fsoft.core.common.base.BaseTreeVo;
 
 /**
  * F-Soft 菜单目录实体Bean
+ * 
  * @package com.fsoft.manager.menu.entity
  * @author Fish
  * @email it.fish2010@foxmail.com
@@ -17,8 +18,8 @@ import com.fsoft.core.common.base.BaseVo;
  * @CopyRight © F-Soft
  **/
 @SuppressWarnings("serial")
-public class SysMenu extends BaseVo {
-	private String parentId;
+public class SysMenu extends BaseTreeVo {
+	private String parentCode;
 	private String parentName;
 	/**
 	 * F-Soft 如果是”菜单“，actionUrl不允许为空
@@ -45,12 +46,12 @@ public class SysMenu extends BaseVo {
 	 */
 	private List<SysMenu> childrens = new ArrayList<SysMenu>();
 
-	public String getParentId() {
-		return parentId;
+	public String getParentCode() {
+		return parentCode;
 	}
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
 	}
 
 	public String getParentName() {

@@ -13,7 +13,6 @@ import com.fsoft.core.common.base.BaseVo;
  */
 @SuppressWarnings("serial")
 public class SysLog extends BaseVo {
-	private String id;
 	private String operateName;
 	private String operation;
 	// 请求方法
@@ -27,14 +26,6 @@ public class SysLog extends BaseVo {
 
 	private String createUserAcct;
 	private String createUserName;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getOperation() {
 		return operation;

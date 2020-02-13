@@ -37,9 +37,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
 		if (OgnlUtils.isEmpty(entity.getCreateTime()))
 			entity.setCreateTime(DateTimeUtils.getNowTime());
 		if (OgnlUtils.isEmpty(entity.getIsSystem()))
-			entity.setIsSystem(Global.STATE_NO);
+			entity.setIsSystem(Global.STATUS_NO);
 		if (OgnlUtils.isEmpty(entity.getStatus()))
-			entity.setStatus(Global.STATE_YES);
+			entity.setStatus(Global.STATUS_YES);
 		// 默认为超级管理员分配所有角色(业务规则：只有当自己有对应的角色的时候，才允许把角色分配给其他人)
 		SysUserRole ur = new SysUserRole();
 		ur.setId(UUIDUtils.randomUpperCaseId());
@@ -73,7 +73,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
 		SysRole sr = getEntity(rwid);
 		if (OgnlUtils.isEmpty(sr))
 			throw new Exception("角色信息不存在，请刷新后重试");
-		if (Global.STATE_YES.compareTo(sr.getIsSystem()) == 0)
+		if (Global.STATUS_YES.compareTo(sr.getIsSystem()) == 0)
 			throw new Exception("内置角色(" + sr.getName() + ")不允许删除!");
 		roleMapper.deleteUserRole(rwid); // 删除角色与用户关系
 		return super.remove(rwid);

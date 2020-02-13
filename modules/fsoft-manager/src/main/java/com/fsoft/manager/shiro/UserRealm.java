@@ -74,11 +74,12 @@ public class UserRealm extends AuthorizingRealm {
 				throw new IncorrectCredentialsException("账号或密码不正确");
 			}
 			// 账号已停用/禁用
-			if (OgnlUtils.isEmpty(sysUser.getStatus()) || sysUser.getStatus().compareTo(Global.STATE_NO) == 0) {
+			if (OgnlUtils.isEmpty(sysUser.getStatus()) || sysUser.getStatus().compareTo(Global.STATUS_NO) == 0) {
 				throw new AccountException("账号已停用/禁用,请联系管理员");
 			}
-			if (OgnlUtils.isNotEmpty(sysUser.getIsLock()) && Global.STATE_YES.compareTo(sysUser.getIsLock()) == 0) {
-				throw new LockedAccountException("账号已锁定，锁定时间[" + DateTimeUtils.formatDateTime(sysUser.getLockTime()) + "],请联系管理员");
+			if (OgnlUtils.isNotEmpty(sysUser.getIsLock()) && Global.STATUS_YES.compareTo(sysUser.getIsLock()) == 0) {
+				throw new LockedAccountException(
+						"账号已锁定，锁定时间[" + DateTimeUtils.formatDateTime(sysUser.getLockTime()) + "],请联系管理员");
 			}
 
 			UserVo currUser = new UserVo();

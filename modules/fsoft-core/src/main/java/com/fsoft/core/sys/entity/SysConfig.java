@@ -19,15 +19,6 @@ public class SysConfig extends BaseVo {
 	@NotBlank(message = "参数值不能为空")
 	private String value;
 	private String remark;
-	private String status;
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
 	public String getId() {
 		return id;
