@@ -59,7 +59,7 @@
 	                        <input class="layui-input" type="text" id="iconFonts" name="icon" lay-filter="iconFonts" value="${menu.icon}">
 	                    </div>
 	                </div>
-	                <div class="layui-form-item">
+	                <div class="layui-col-md4 layui-col-md-offset4">
 						<button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">
 							<i class="fa fa-save" aria-hidden="true" ></i> 保存
 						</button>

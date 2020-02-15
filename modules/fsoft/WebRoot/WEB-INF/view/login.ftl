@@ -16,7 +16,7 @@
             <hr class="hr15">
             <div class="layui-inline">
             	<div class="layui-input-inline">
-            		<input class="layui-input" name="captcha" placeholder="验证码" type="text" lay-verify="required" autocomplete="off">
+            		<input class="layui-input" name="captcha" placeholder="验证码（开发模式任意值）" type="text" lay-verify="required" autocomplete="off">
             	</div>
             	<div class="layui-input-inline">
 	            	<img id="captcha" src="${request.contextPath}/captcha.jpg" onclick="refreshCode(this)">

@@ -1,8 +1,7 @@
+
 package com.fsoft.core.dict.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,66 +18,108 @@ import com.fsoft.core.dict.service.SysDictService;
 import com.fsoft.core.utils.DateTimeUtils;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.UUIDUtils;
+import com.fsoft.core.utils.tree.BuildTree;
+import com.fsoft.core.utils.tree.Tree;
 
 /**
- * 数据字典管理服务
- * 
+ * F-Soft 数据字典管理服务<br>
+ * TODO 考虑引入缓存，避免每次查询数据库
+ * @package com.fsoft.core.dict.service.impl
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019-03-25
- * @copyright 佳乐软件股份有限公司© 2019-2019
- *
- */
+ * @date 2020-02-15
+ * @CopyRight © F-Soft
+ **/
 @Transactional
 @Service("sysDictService")
 public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysDictService {
 	@Autowired
-	private SysDictMapper sysDictMapper;
-	private static final Map<String, List<SysDictItem>> itemMap = new HashMap<String, List<SysDictItem>>();
-	private static final Map<String, SysDict> dictMap = new HashMap<String, SysDict>();
+	private SysDictMapper dictMapper;
 
 	@Override
-	public SysDict getEntity(String dictCode) throws Exception {
-		if (!dictMap.containsKey(dictCode)) {
-			SysDict dict = sysDictMapper.selectByKey(dictCode);
-			dictMap.put(dict.getCode(), dict);
-		}
-		return dictMap.get(dictCode);
+	public SysDict getEntityByCode(String code) throws Exception {
+		SysDict dict = new SysDict();
+		dict.setCode(code);
+		QueryParam query = new QueryParam(dict);
+		List<SysDict> dicts = findList(query);
+		return OgnlUtils.isEmpty(dicts) ? null : dicts.get(0);
+	}
+
+	@Override
+	public int save(SysDict param) throws Exception {
+		if (StringUtils.isBlank(param.getId()))
+			param.setId(UUIDUtils.randomUpperCaseId());
+		SysDict entity = getEntityByCode(param.getCode());
+		if (OgnlUtils.isNotEmpty(entity))
+			throw new Exception("字典编码[" + param.getCode() + "]已存在！");
+		return super.save(param);
+	}
+
+	@Override
+	public int modify(SysDict param) throws Exception {
+		if (OgnlUtils.isEmpty(param.getModifyTime()))
+			param.setModifyTime(DateTimeUtils.getNowTime());
+		SysDict entity = getEntityByCode(param.getCode());
+		if (OgnlUtils.isNotEmpty(entity) && !StringUtils.equals(entity.getId(), param.getId()))
+			throw new Exception("字典编码[" + param.getCode() + "]已被字典[" + entity.getName() + "]使用!");
+		return super.modify(param);
+	}
+
+	/**
+	 * 删除字典操作，需要级联删除字典配置项
+	 */
+	@Override
+	public int remove(String rwid) throws Exception {
+		removeItemByDictId(rwid);
+		return super.remove(rwid);
+	}
+
+	@Override
+	public int removeBatch(List<String> ids) throws Exception {
+		if (OgnlUtils.isNotEmpty(ids) && ids.size() == 1)
+			return remove(ids.get(0));
+		// 批量删除
+		dictMapper.deleteItemBatchByDictId(ids);
+		return super.removeBatch(ids);
+	}
+
+	@Override
+	public SysDict getEntity(String id) throws Exception {
+		return dictMapper.selectByKey(id);
 	}
 
 	@Override
 	public List<SysDictItem> findDictItems(String dictCode) throws Exception {
-		if (!itemMap.containsKey(dictCode)) {
-			SysDictItem item = new SysDictItem();
-			item.setDictCode(dictCode);
-			QueryParam params = new QueryParam(item);
-			List<SysDictItem> items = findDictItems(params);
-			if (OgnlUtils.isNotEmpty(items))
-				itemMap.put(dictCode, items);
-		}
-		return itemMap.get(dictCode);
+		SysDictItem item = new SysDictItem();
+		item.setDictCode(dictCode);
+		QueryParam params = new QueryParam(item);
+		return findDictItems(params);
+	}
+
+	@Override
+	public List<Tree> findDictItemTree(QueryParam param) throws Exception {
+		List<SysDictItem> list = findDictItems(param);
+		return BuildTree.buildTree(list);
 	}
 
 	@Override
 	public List<SysDictItem> findDictItems(QueryParam params) throws Exception {
-		return sysDictMapper.selectItemList(params);
+		return dictMapper.selectItemList(params);
 	}
 
 	@Override
 	public SysDictItem getDictItem(String id) throws Exception {
-		return sysDictMapper.selectItemByKey(id);
+		return dictMapper.selectItemByKey(id);
 	}
 
 	@Override
 	public SysDictItem getDictItem(String dictCode, String itemCode) throws Exception {
-		List<SysDictItem> items = findDictItems(dictCode);
-		if (OgnlUtils.isEmpty(items))
-			return null;
-		for (SysDictItem item : items) {
-			if (StringUtils.equals(item.getCode(), itemCode))
-				return item;
-		}
-		return sysDictMapper.selectItem(dictCode, itemCode);
+		SysDictItem item = new SysDictItem();
+		item.setDictCode(dictCode);
+		item.setCode(itemCode);
+		QueryParam params = new QueryParam(item);
+		List<SysDictItem> items = findDictItems(params);
+		return OgnlUtils.isEmpty(items) ? null : items.get(0);
 	}
 
 	@Override
@@ -87,7 +128,13 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
 			entity.setId(UUIDUtils.randomUpperCaseId());
 		if (OgnlUtils.isEmpty(entity.getCreateTime()))
 			entity.setCreateTime(DateTimeUtils.getNowTime());
-		return sysDictMapper.insertItem(entity);
+		if (StringUtils.isBlank(entity.getParentId()))
+			entity.setParents(entity.getId());
+		else {
+			SysDictItem p_item = getDictItem(entity.getParentId());
+			entity.setParents(p_item.getParents() + "_" + entity.getId());
+		}
+		return dictMapper.insertItem(entity);
 	}
 
 	@Override
@@ -98,22 +145,16 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
 			throw new RRException("字典标识为空!");
 		if (OgnlUtils.isEmpty(entity.getModifyTime()))
 			entity.setModifyTime(DateTimeUtils.getNowTime());
-		return sysDictMapper.updateItem(entity);
+		return dictMapper.updateItem(entity);
 	}
 
 	@Override
 	public int removeItemById(String id) throws Exception {
-		return sysDictMapper.deleteItem(id);
+		return dictMapper.deleteItem(id);
 	}
 
 	@Override
 	public int removeItemByDictId(String dictId) throws Exception {
-		return sysDictMapper.deleteItemByDictId(dictId);
+		return dictMapper.deleteItemByDictId(dictId);
 	}
-
-	@Override
-	public int getDictItemTotal(QueryParam params) throws Exception {
-		return sysDictMapper.selectItemListCount(params);
-	}
-
 }

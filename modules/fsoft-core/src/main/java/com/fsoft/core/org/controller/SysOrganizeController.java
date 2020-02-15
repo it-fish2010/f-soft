@@ -24,7 +24,6 @@ import com.fsoft.core.utils.DateTimeUtils;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.RetVo;
 import com.fsoft.core.utils.tree.BuildTree;
-import com.fsoft.core.utils.tree.Tree;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -94,8 +93,9 @@ public class SysOrganizeController extends BaseController {
 		String orgId = getUser().getCurrentOrgId();
 		if (StringUtils.equals(Global.DEFAULT_ORG_ID, orgId))
 			orgId = null;
-		List<Tree> trees = orgService.findOrgTree(orgId);
-		return RetVo.ok(trees.size(), BuildTree.buildJsonArray(trees));
+		QueryParam query = new QueryParam(params);
+		List<SysOrganize> trees = orgService.findList(query);
+		return RetVo.ok(trees.size(), BuildTree.buildTree(trees));
 	}
 
 	/***

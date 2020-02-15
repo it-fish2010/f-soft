@@ -20,7 +20,7 @@ layui.use(['laydate','form','table'], function() {
 		page : true,
 		limit : 10,
 		limits : [10,20,30,50,100,200],
-		height : 'full-167'
+		height : 'full-172'
 	});
 	//搜索监听
 	form.on('submit(sreach)', function(data){

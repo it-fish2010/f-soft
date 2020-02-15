@@ -1,8 +1,6 @@
 package com.fsoft.core.org.service.impl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsoft.core.Global;
-import com.fsoft.core.common.QueryParam;
 import com.fsoft.core.common.service.impl.BaseServiceImpl;
 import com.fsoft.core.org.entity.SysOrganize;
 import com.fsoft.core.org.mapper.SysOrganizeMapper;
 import com.fsoft.core.org.service.OrganizeService;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.UUIDUtils;
-import com.fsoft.core.utils.tree.Tree;
 
 /**
  * F-Soft
@@ -37,25 +33,6 @@ public class OrganizeServiceImpl extends BaseServiceImpl<SysOrganize> implements
 	@Override
 	public SysOrganize getOrgByCode(String orgCode) throws Exception {
 		return orgMapper.selectByCode(orgCode);
-	}
-
-	@Override
-	public List<Tree> findOrgTree(String orgId) throws Exception {
-		QueryParam param = new QueryParam();
-		if (!StringUtils.equals(Global.DEFAULT_ORG_ID, orgId))
-			param.put("parents", orgId);
-		List<SysOrganize> list = findList(param);
-		List<Tree> trees = new ArrayList<Tree>();
-		for (SysOrganize org : list) {
-			Tree tree = new Tree();
-			tree.setId(org.getId());
-			tree.setField(org.getCode());
-			tree.setTitle(org.getName());
-			tree.setCode(org.getCode());
-			tree.setParentId(org.getParentId());
-			trees.add(tree);
-		}
-		return trees;
 	}
 
 	@Override

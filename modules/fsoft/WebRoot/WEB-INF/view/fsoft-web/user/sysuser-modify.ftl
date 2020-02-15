@@ -5,9 +5,9 @@
  		<#include "fsoft-common.ftl" />
     </head>
     <body>
+    	<form class="layui-form layui-form-pane" action="" method="post">
         <div class="layui-fluid">
             <div class="layui-row">
-            	<form class="layui-form layui-form-pane" action="" method="post">
 	  				<#-- 隐藏域： ID，有ID，是编辑; 无ID，是新增 -->
 				  	<input type="hidden" id="id" name="id" value="${user.id}">
 				  	<#-- 隐藏域: 锁定标识 -->
@@ -66,7 +66,7 @@
 	                    	<select name="theme" lay-filter="user-theme">
 	                    		<option value="theme1" <#if user.theme=='theme1'>selected</#if> >简约黑</option>
 	                    		<option value="theme2" <#if user.theme=='theme2'>selected</#if> >商务风</option>
-	                    		<option value="theme3" <#if user.theme=='theme3'>selected</#if> >天空蓝</option>
+	                    		<option value="theme3" <#if user.theme=='theme3'>selected</#if> >天籁红</option>
 	                    	</select>
 	                	</div>
 	              	</div>
@@ -83,14 +83,14 @@
               				</#if>
 	                  	</div>
 	              	</div>
-	                <div class="layui-form-item layui-col-md4 layui-col-md-offset4">
+	                <div class="layui-col-md4 layui-col-md-offset4">
 	                	<button  class="layui-btn layui-btn-normal" lay-filter="save" lay-submit="">
 	                      	<i class="fa fa-save" aria-hidden="true" ></i> 保存
                       	</button>
 	                </div>
-          		</form>
 			</div>
     	</div>
+  		</form>
 	</body>
     <script type="text/javascript">
 	    layui.config({

@@ -2,156 +2,137 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fsoft.manager.area.mapper.SysAreaMapper">
-    <resultMap id="areaResultMap" type="com.fsoft.manager.area.entity.SysArea">
-        <result property="id" column="id" jdbcType="VARCHAR"/>
-        <result property="code" column="area_code" jdbcType="VARCHAR"/>
-        <result property="name" column="area_name" jdbcType="VARCHAR"/> 
-        <result property="areaNamePy" column="area_name_py" jdbcType="VARCHAR"/>
-        <result property="parentAreaId" column="parent_area_id" jdbcType="VARCHAR"/> 
-        <result property="parentAreaName" column="PARENT_AREA_NAME" jdbcType="VARCHAR"/>
-        <result property="parentAreas" column="parent_areas" jdbcType="VARCHAR"/>
-        <result property="sortNo" column="sort_no" jdbcType="DECIMAL"/>
-        <result property="areaLevel" column="area_level" jdbcType="DECIMAL"/>
-        <result property="isCity" column="is_city" jdbcType="DECIMAL"/>
-        <result property="region" column="region" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="DECIMAL"/>
-        <result property="postCode" column="post_code" jdbcType="VARCHAR"/>
-    </resultMap>
-    <sql id="selectCols">
-        SELECT T.ID,
-               T.AREA_CODE,
-               T.AREA_NAME,
-               T.AREA_NAME_PY,
-               T.PARENT_AREA_ID,
-               (SELECT AREA_NAME FROM SYS_AREA WHERE ID=T.PARENT_AREA_ID) AS PARENT_AREA_NAME,
-               T.SORT_NO,
-               T.AREA_LEVEL,
-               T.IS_CITY,
-               T.REGION,
-               T.PARENT_AREAS,
-               T.STATUS,
-               T.POST_CODE,
-               T.CREATE_USER_ID,
-               T.CREATE_TIME,
-               T.MODIFY_USER_ID,
-               T.MODIFY_TIME
-          FROM SYS_AREA T
-    </sql>
-    <sql id="queryWhere">
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentAreaId)">
-                AND T.PARENT_AREA_ID = #{parentAreaId,jdbcType=VARCHAR}
-            </if>
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
-                and t.AREA_NAME like concat('%',#{name},'%')
-            </if>
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
-                and t.AREA_CODE like concat('%',#{code},'%')
-            </if>
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaLevel)">
-                and t.area_level=#{areaLevel}
-            </if>
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentAreas)">
-                and t.PARENT_AREAS like concat('%',#{parentAreas},'%')
-            </if>
-            <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
-                and t.status =#{status,jdbcType=DECIMAL}
-            </if>
-        </trim>
-    </sql>
-    <select id="selectByKey" parameterType="java.lang.String" resultMap="areaResultMap">
-        <include refid="selectCols"/> where T.ID = #{value,jdbcType=VARCHAR}
-    </select>
-    <!-- 必须包含排序参数 -->
-    <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="areaResultMap">
-        <include refid="selectCols"/>
-        <include refid="queryWhere"/>
-        ORDER BY T.AREA_LEVEL ASC,t.SORT_NO ASC ,T.AREA_CODE ASC
-    </select>
-    <insert id="insert" parameterType="com.fsoft.manager.area.entity.SysArea">
-        insert into sys_area
-          (id,
-           area_code,
-           area_name,
-           area_name_py,
-           parent_area_id,
-           parent_areas,
-           sort_no,
-           area_level,
-           is_city,
-           region,
-           status,
-           post_code,
-           create_user_id,
-           create_time)
-        values
-          (#{id},
-           #{areaCode},
-           #{areaName},
-           #{areaNamePy},
-           #{parentAreaId},
-           #{parentAreas},
-           #{sortNo},
-           #{areaLevel},
-           #{isCity},
-           #{region},
-           #{status},
-           #{postCode},
-           #{createUserId},
-           #{createTime})
-    </insert>
+  <resultMap id="ResultMap" type="com.fsoft.manager.area.entity.SysArea" extends="com.fsoft.core.common.base.BaseMapper.baseTreeMap">
+    <result property="parentCode" column="PARENT_CODE" jdbcType="VARCHAR" />
+    <result property="parentName" column="PARENT_NAME" jdbcType="VARCHAR" /> 
+    <result property="postCode" column="post_code" jdbcType="VARCHAR" />
+    <result property="areaCode" column="AREA_CODE" jdbcType="VARCHAR" />
+    <result property="sortNo" column="SORT_NO" jdbcType="DECIMAL" />
+    <result property="isCity" column="IS_CITY" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="selectCols">
+    SELECT A.RWID,
+           A.STD_CODE,
+           A.STD_NAME,
+           A.PARENT_ID,
+           P.STD_CODE       AS PARENT_CODE,
+           P.STD_NAME       AS PARENT_NAME,
+           A.PARENTS,
+           A.IS_CITY,
+           A.POST_CODE,
+           A.AREA_CODE,
+           A.STATUS,
+           A.SORT_NO,
+           A.CREATE_USER_ID,
+           CU.LOGIN_ACCT    AS CREATE_USER_CODE,
+           CU.USER_NAME     AS CREATE_USER_NAME,
+           A.CREATE_TIME,
+           A.MODIFY_USER_ID,
+           MU.LOGIN_ACCT    AS MODIFY_USER_CODE,
+           MU.USER_NAME     AS MODIFY_USER_NAME,
+           A.MODIFY_TIME
+      FROM SYS_AREA A
+      LEFT JOIN SYS_AREA P    ON A.PARENT_ID = P.RWID
+      LEFT JOIN SYS_USER CU   ON A.CREATE_USER_ID = CU.RWID
+      LEFT JOIN SYS_USER MU   ON A.CREATE_USER_ID = MU.RWID
+  </sql>
+  <sql id="queryWhere">
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+        AND A.STD_CODE LIKE CONCAT('%',#{code},'%')
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+        AND A.STD_NAME LIKE CONCAT('%',#{name},'%')
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentId)">
+        AND A.PARENT_ID = #{parentAreaId,jdbcType=VARCHAR}
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parents)">
+        AND A.PARENTS like concat('%',#{parents},'%')
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+        AND A.STATUS =#{status,jdbcType=DECIMAL}
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(postCode)">
+        AND A.POST_CODE LIKE CONCAT('%',CONCAT(#{postCode},'%'))
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaCode)">
+        AND A.AREA_CODE LIKE CONCAT('%',CONCAT(#{areaCode},'%'))
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByKey" parameterType="java.lang.String" resultMap="ResultMap">
+    <include refid="selectCols" /> WHERE A.RWID = #{value,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="ResultMap">
+    <include refid="selectCols" />
+    <include refid="queryWhere" />
+    ORDER BY A.SORT_NO ASC ,A.AREA_CODE ASC
+  </select>
+  <insert id="insert" parameterType="com.fsoft.manager.area.entity.SysArea">
+    INSERT INTO SYS_AREA
+      (RWID,STD_CODE,STD_NAME,PARENT_ID,PARENTS,IS_CITY,AREA_CODE,POST_CODE,STATUS,SORT_NO,CREATE_USER_ID,CREATE_TIME)
+    VALUES
+      (#{id,jdbcType=VARCHAR},
+       #{code,jdbcType=VARCHAR},
+       #{name,jdbcType=VARCHAR},
+       #{parentId,jdbcType=VARCHAR},
+       #{parents,jdbcType=VARCHAR},
+       #{isCity,jdbcType=DECIMAL},
+       #{areaCode,jdbcType=VARCHAR},
+       #{postCode,jdbcType=VARCHAR},
+       #{status,jdbcType=DECIMAL},
+       #{sortNo,jdbcType=DECIMAL},
+       #{createUserId,jdbcType=VARCHAR},
+       #{createTime,jdbcType=TIMESTAMP})
 
-    <update id="update" parameterType="com.fsoft.manager.area.entity.SysArea">
-        UPDATE sys_area 
-		<trim prefix="SET" suffixOverrides=",">
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaCode)">
-				area_code = #{areaCode,jdbcType=VARCHAR},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaName)">
-				area_name = #{areaName,jdbcType=VARCHAR},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaNamePy)">
-				area_name_py = #{areaNamePy,jdbcType=VARCHAR},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentAreaId)">
-				parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentAreas)">
-				parent_areas = #{parentAreas,jdbcType=VARCHAR},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sortNo)">
-				sort_no = #{sortNo},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaLevel)">
-				area_level = #{areaLevel},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(isCity)">
-				is_city = #{isCity},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(region)">
-				region = #{region},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
-				status = #{status},
-			</if>
-			<if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(postCode)">
-				post_code = #{postCode,jdbcType=VARCHAR},
-			</if>
-			modify_user_id = #{modifyUserId},
-			modify_time = #{modifyTime},
-		</trim>
-		WHERE id = #{id}
-    </update>
+  </insert>
 
-    <delete id="delete" parameterType="java.lang.String">
-        DELETE FROM SYS_AREA WHERE RWID = #{value,jdbcType=VARCHAR}
-    </delete>
+  <update id="update" parameterType="com.fsoft.manager.area.entity.SysArea">
+    UPDATE SYS_AREA
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(code)">
+        STD_CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(name)">
+        STD_NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parentId)">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(parents)">
+        PARENTS = #{parents,jdbcType=VARCHAR},
+      </if>
+       <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(areaCode)">
+        AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(postCode)">
+        POST_CODE = #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(sortNo)">
+        SORT_NO = #{sortNo,jdbcType=NUMERIC},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(isCity)">
+        IS_CITY = #{isCity,jdbcType=NUMERIC},
+      </if>
+      <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(status)">
+        status = #{status,jdbcType=NUMERIC},
+      </if>
+      MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+    </trim>
+    WHERE RWID = #{id,jdbcType=VARCHAR}
+  </update>
 
-    <delete id="deleteBatch" parameterType="java.util.List">
-        delete from sys_area where RWID in
-        <foreach item="areaId" collection="array" open="(" separator="," close=")">
-            #{areaId,jdbcType=VARCHAR}
-        </foreach>
-    </delete>
+  <delete id="delete" parameterType="java.lang.String">
+    DELETE FROM SYS_AREA WHERE RWID = #{value,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteBatch" parameterType="java.util.List">
+    delete from SYS_AREA where RWID in
+    <foreach item="val" collection="array" open="(" separator="," close=")">
+      #{val,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
 
 </mapper>

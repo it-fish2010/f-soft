@@ -4,29 +4,21 @@ layui.use(['form','table'], function() {
 	//字典列表刷新
 	table.render({
 		elem : '#table',
-		url : layui.cache['contentPath'] + '/sys-dict/findList',
+		url : layui.cache['contentPath'] + '/sys-dict/findItemList',
+		where:form.val("fsoftForm"),
 		cols : [[
 			{type:'checkbox',fixed: 'left'},
 			{field : 'id',title: '#',hide:true,width : 80}, 
-			{field : 'code',title : '编码',width : 150,sort:true},
-			{field : 'name',title : '名称',width : 300},
-			{field : 'dictType',title : '类型',width :80,align:'center'
-				,templet:function(item){
-					if(item.dictType==1){
-						return '<span class="layui-badge layui-bg-blue">列表</span>'
-					}else if(item.dictType==2){
-						return '<span class="layui-badge layui-bg-gray">树形</span>'
-					}else{
-						return '<span class="layui-badge">其他</span>'
-					}
-				} 
-			},
+			{field : 'code',title : '配置编码',width : 200,sort:true},
+			{field : 'name',title : '配置名称',width : 200},
+			{field : 'dictName',title : '所属字典',width :200},
 			{field : 'status',title : '状态',width : 110,templet:'#switchStatus'},
-			{fixed: 'right', width:220, align:'center',title:'操作', toolbar: '#sysdict-tbs',fixed:'right'}
+			{field : 'createTime',title : '创建时间',width :200},
+			{fixed: 'right', width:150, align:'center',title:'操作', toolbar: '#fsoftItemTable',fixed:'right'}
 			]],
 		page : true,
-		limit : 20,
-		limits : [ 20, 30, 50,100],
+		limit : 10,
+		limits : [10,20,50,100],
 		height : 'full-180'
 	});
 	//搜索监听
@@ -35,17 +27,15 @@ layui.use(['form','table'], function() {
 		return false ;
 	});
 	//行操作监听 
-	table.on('tool(tbs)',function(obj){
+	table.on('tool(fsoftItemTable)',function(obj){
 		var data = obj.data;
-		if(obj.event==='setting'){
-			xadmin.open(data.name+'-配置',layui.cache['contentPath']+'/sys-dict/items/'+data.id);
-		}else if (obj.event==='edit'){
-			xadmin.open('编辑字典',layui.cache['contentPath']+'/sys-dict/edit/'+data.id,500,350);
+		if (obj.event==='edit'){
+			xadmin.open('编辑配置项',layui.cache['contentPath']+'/sys-dict/edititem/'+data.id,500,350);
 		}else if (obj.event==='del'){
 			layer.confirm("确认要删除当前记录？", function(index) {
 				$.ajax({
 					type:'POST',
-					url:layui.cache['contentPath']+'/sys-dict/remove',
+					url:layui.cache['contentPath']+'/sys-dict/removeItem',
 					data:JSON.stringify([data.id]),
 					contentType: "application/json",
 					success:function(rs){
@@ -81,7 +71,7 @@ layui.use(['form','table'], function() {
 			layer.confirm("确认要删除已选中的（"+ids.length+"）条记录？", function(index) {
 				$.ajax({
 					type:'POST',
-					url:layui.cache['contentPath']+'/sys-dict/remove',
+					url:layui.cache['contentPath']+'/sys-dict/removeItem',
 					data:JSON.stringify(ids),
 					contentType: "application/json",
 					success:function(rs){
@@ -100,7 +90,7 @@ layui.use(['form','table'], function() {
 			});
 		},
 		add:function(){
-			xadmin.open('新增字典',layui.cache['contentPath']+'/sys-dict/add',500,350);
+			xadmin.open('添加配置项',layui.cache['contentPath']+'/sys-dict/additem/'+$("#dictId").val(),500,350);
 		},
 		enable:function(){/*启用*/
 			var checkStatus = table.checkStatus('table');
@@ -113,10 +103,10 @@ layui.use(['form','table'], function() {
 			for(var k = 0;k<data.length;k++){
 				ids.push(data[k].id);
 			}
-			layer.confirm("确认要启用已选中的（"+ids.length+"）个字典？", function(index) {
+			layer.confirm("确认要启用已选中的（"+ids.length+"）个配置项？", function(index) {
 				$.ajax({
 					type:'POST',
-					url:layui.cache['contentPath']+'/sys-dict/enable',
+					url:layui.cache['contentPath']+'/sys-dict/enableItem',
 					data:JSON.stringify(ids),
 					contentType: "application/json",
 					success:function(rs){
@@ -145,10 +135,10 @@ layui.use(['form','table'], function() {
 			for(var k = 0;k<data.length;k++){
 				ids.push(data[k].id);
 			}
-			layer.confirm("确认要禁用已选中的（"+ids.length+"）个字典？", function(index) {
+			layer.confirm("确认要禁用已选中的（"+ids.length+"）个配置项？", function(index) {
 				$.ajax({
 					type:'POST',
-					url:layui.cache['contentPath']+'/sys-dict/disable',
+					url:layui.cache['contentPath']+'/sys-dict/disableItem',
 					data:JSON.stringify(ids),
 					contentType: "application/json",
 					success:function(rs){

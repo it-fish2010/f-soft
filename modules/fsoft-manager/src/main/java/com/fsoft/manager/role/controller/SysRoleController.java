@@ -25,7 +25,6 @@ import com.fsoft.core.common.validator.ValidatorUtils;
 import com.fsoft.core.utils.DateTimeUtils;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.RetVo;
-import com.fsoft.core.utils.tree.BuildTree;
 import com.fsoft.core.utils.tree.Tree;
 import com.fsoft.manager.menu.entity.SysMenu;
 import com.fsoft.manager.menu.service.SysMenuService;
@@ -100,7 +99,7 @@ public class SysRoleController extends BaseController {
 
 	/**
 	 * @des 角色列表，提供给“分配角色”的时候调用。<BR>
-	 * 任何人只允许选择自己已有的角色进行分配，自己没有的角色，不允许分配
+	 *      任何人只允许选择自己已有的角色进行分配，自己没有的角色，不允许分配
 	 * @author Fish it.fish2010@foxmail.com
 	 * @date 2019-11-01
 	 * @return
@@ -129,7 +128,8 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequestMapping("/info/{roleId}")
 	@RequiresPermissions("sys:role:info")
-	public String info(HttpServletRequest request, Model model, @PathVariable("roleId") String roleId) throws Exception {
+	public String info(HttpServletRequest request, Model model, @PathVariable("roleId") String roleId)
+			throws Exception {
 		SysRole role = roleService.getEntity(roleId);
 		model.addAttribute("role", role);
 		return "/fsoft-web/role/sysrole-info";
@@ -148,9 +148,9 @@ public class SysRoleController extends BaseController {
 	public RetVo findRoleMenuTrees(@RequestParam Map<String, Object> params) throws Exception {
 		QueryParam query = new QueryParam();
 		query.put("userId", getUserId());
-		List<Tree> trees = menuService.findMenuTrees(query); //查询当前用户的ID标识
+		List<Tree> trees = menuService.findMenuTrees(query); // 查询当前用户的ID标识
 		RetVo rv = RetVo.ok();
-		rv.put("menutree", BuildTree.buildJsonArray(trees));
+		rv.put("menutree", trees);
 		//
 		query = null;
 		query = new QueryParam(params);

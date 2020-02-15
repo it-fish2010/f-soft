@@ -41,15 +41,10 @@
       LEFT JOIN SYS_DICT T ON T.RWID = I.DICT_ID
   </sql>
   <select id="selectByKey" resultMap="dictMap" parameterType="java.lang.String">
-    <include refid="selectDictCols" /> WHERE T.ID = #{value,jdbcType=VARCHAR}
+    <include refid="selectDictCols" /> WHERE T.RWID = #{value,jdbcType=VARCHAR}
   </select>
   <select id="selectItemByKey" resultMap="itemMap" parameterType="java.lang.String">
-    <include refid="selectItemCols" /> WHERE T.RWID = #{value,jdbcType=VARCHAR}
-  </select>
-  <select id="selectItem" resultMap="itemMap" parameterType="java.lang.String">
-    <include refid="selectItemCols" />
-    WHERE T.STD_CODE = #{dictCode,jdbcType=VARCHAR}
-      AND I.STD_CODE = #{itemCode,jdbcType=VARCHAR}
+    <include refid="selectItemCols" /> WHERE I.RWID = #{value,jdbcType=VARCHAR}
   </select>
   <select id="selectList" parameterType="com.fsoft.core.common.QueryParam" resultMap="dictMap">
     <include refid="selectDictCols" />
@@ -85,7 +80,7 @@
         AND I.DICT_ID = #{dictId,jdbcType=VARCHAR}
       </if>
       <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictCode)">
-        AND T.STD_CODE = #{dictCode,jdbcType=VARCHAR}
+        AND (T.STD_CODE = #{dictCode,jdbcType=VARCHAR} OR I.DICT_ID = #{dictCode,jdbcType=VARCHAR}) 
       </if>
       <if test="@com.fsoft.core.utils.OgnlUtils@isNotEmpty(dictName)">
         AND T.STD_NAME LIKE concat('%',#{dictName,jdbcType=VARCHAR},'%')
@@ -156,11 +151,11 @@
   </update>
 
   <delete id="delete" parameterType="java.lang.String">
-    DELETE FROM SYS_DICT WHERE ID = #{value}
+    DELETE FROM SYS_DICT WHERE RWID = #{value}
   </delete>
 
   <delete id="deleteBatch" parameterType="java.util.List">
-    DELETE FROM SYS_DICT WHERE ID IN
+    DELETE FROM SYS_DICT WHERE RWID IN
     <foreach item="id" collection="list" open="(" separator="," close=")">
       #{id}
     </foreach>
@@ -196,15 +191,25 @@
   <delete id="deleteItemByDictId" parameterType="java.lang.String">
     DELETE FROM SYS_DICT_ITEM WHERE DICT_ID = #{value}
   </delete>
+  
   <delete id="deleteItemByDictCode" parameterType="java.lang.String">
     DELETE FROM SYS_DICT_ITEM I
     WHERE EXISTS (SELECT 1 FROM SYS_DICT D WHERE D.RWID = I.DICT_ID AND D.STD_CODE= #{value,jdbcType=VARCHAR})
   </delete>
 
   <delete id="deleteItemBatch" parameterType="java.util.List">
-    delete from sys_dict_item where RWID in
+    DELETE FROM SYS_DICT_ITEM WHERE RWID IN
     <foreach item="id" collection="list" open="(" separator="," close=")">
       #{id}
     </foreach>
+  </delete>
+  <delete id="deleteItemBatchByDictId" parameterType="java.util.List">
+    DELETE FROM SYS_DICT_ITEM 
+     WHERE DICT_ID IN (
+      SELECT RWID FROM SYS_DICT WHERE RWID IN 
+      <foreach item="id" collection="list" open="(" separator="," close=")">
+        #{id}
+      </foreach>
+     )
   </delete>
 </mapper>

@@ -15,6 +15,7 @@ import com.fsoft.core.common.service.impl.BaseServiceImpl;
 import com.fsoft.core.utils.DateTimeUtils;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.UUIDUtils;
+import com.fsoft.core.utils.tree.BuildTree;
 import com.fsoft.core.utils.tree.Tree;
 import com.fsoft.manager.menu.entity.SysMenu;
 import com.fsoft.manager.menu.mapper.SysMenuMapper;
@@ -80,16 +81,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
 			node.setPerms(menu.getPerms());
 			trees.add(node);
 		}
-		// 维护Tree属性中的children
-		for (Tree tree : trees) {
-			List<Tree> chs = new ArrayList<Tree>();
-			for (Tree ch : trees) {
-				if (StringUtils.equals(tree.getId(), ch.getParentId()))
-					chs.add(ch);
-			}
-			tree.setChildren(chs);
-		}
-		return trees;
+		return BuildTree.buildJsonArray(trees);
 	}
 
 	@Override

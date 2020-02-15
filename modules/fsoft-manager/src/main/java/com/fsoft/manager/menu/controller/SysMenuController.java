@@ -24,7 +24,6 @@ import com.fsoft.core.common.base.BaseController;
 import com.fsoft.core.common.exceptions.RRException;
 import com.fsoft.core.utils.OgnlUtils;
 import com.fsoft.core.utils.RetVo;
-import com.fsoft.core.utils.tree.BuildTree;
 import com.fsoft.core.utils.tree.Tree;
 import com.fsoft.manager.menu.entity.SysMenu;
 import com.fsoft.manager.menu.service.SysMenuService;
@@ -84,7 +83,7 @@ public class SysMenuController extends BaseController {
 		QueryParam queryParam = new QueryParam(params);
 		queryParam.put("userId", getUserId());
 		List<Tree> trees = sysMenuService.findMenuTrees(queryParam);
-		return RetVo.ok(trees.size(), BuildTree.buildJsonArray(trees));
+		return RetVo.ok(trees.size(), trees);
 	}
 
 	/***
@@ -215,7 +214,7 @@ public class SysMenuController extends BaseController {
 	@RequestMapping("/user")
 	public RetVo user() throws Exception {
 		List<Tree> trees = sysMenuService.findUserMenuTrees(getUserId());
-		return RetVo.ok().put("menulist", BuildTree.buildJsonArray(trees));
+		return RetVo.ok().put("menulist", trees);
 	}
 
 	/***

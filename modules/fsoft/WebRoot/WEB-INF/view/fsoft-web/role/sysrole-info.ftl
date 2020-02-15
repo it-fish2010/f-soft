@@ -17,7 +17,7 @@
 	                    <label for="name" class="layui-form-label">
 	                        <span class="x-red">*</span>角色编码
 	                    </label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                        <input type="text" id="code" name="code" value="${role.code}" class="layui-input" disabled>
 	                    </div>
 	                </div>
@@ -25,7 +25,7 @@
 	                    <label for="name" class="layui-form-label">
 	                        <span class="x-red">*</span>角色名称
 	                    </label>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-block">
 	                        <input type="text" id="name" name="name" value="${role.name}" class="layui-input" disabled>
 	                    </div>
 	                </div>
@@ -35,7 +35,7 @@
 	                    	<ul class="dtree" name="menus" id="roleMenuTree" data-id="0"></ul>
 	                    </div>
 	                </div>
-	                <div class="layui-form-item">
+	                <div class="layui-col-md4 layui-col-md-offset4">
 						<button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">
 							<i class="fa fa-save" aria-hidden="true" ></i> 保存
 						</button>

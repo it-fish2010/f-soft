@@ -3,20 +3,20 @@ layui.use([ 'form', 'layer' ], function() {
 		layer = layui.layer;
 	var rwid = $('#id').val();
 	var orgTrees ;
-	//组织机构列表
-	$.post(layui.cache['contentPath']+"/sys-org/findList", {}, function(data) {
+	//
+	$.post(layui.cache['contentPath']+"/sys-area/findList", {}, function(data) {
 		data = eval('('+data+')');
 		if(data.code=="0"){
 			orgTrees = xmSelect.render({
-			    el: '#xm-select-orgTrees',
+			    el: '#xm-select-Area',
 			    initValue:[$('#parentId').val()],
 			    prop:{name:'name',value:'id'},
 			    theme:{color:'#0081ff'},
 			    data: data.data,
 			    paging: true,
 			    pageSize:5,
-			    clickClose:true,
-			    radio:true,
+				radio:true,
+				clickClose:true,
 			    size:'medium',
 			    name:"parentId",
 			    on:function(data){
@@ -33,9 +33,9 @@ layui.use([ 'form', 'layer' ], function() {
 	
 	// 监听提交
 	form.on('submit(save)', function(data) {
-		var submitUrl = layui.cache['contentPath']+'/sys-org/save';
+		var submitUrl = layui.cache['contentPath']+'/sys-area/save';
 		if(rwid!=undefined && rwid!=""){
-			submitUrl = layui.cache['contentPath']+'/sys-org/modify';
+			submitUrl = layui.cache['contentPath']+'/sys-area/modify';
 		}
 		$.ajax({
 			type:'POST',

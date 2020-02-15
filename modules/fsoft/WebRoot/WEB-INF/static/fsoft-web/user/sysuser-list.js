@@ -23,9 +23,9 @@ layui.use(['form','table','eleTree'], function() {
 		url : layui.cache['contentPath'] + '/sys-user/findList',
 		cols : [[
 			{type:'checkbox',fixed: 'left'},
-			{type:'numbers',width:50,title:'序号'},
-			{field : 'id',title: '#',hide:true,width : 80}, 
-			{field : 'loginAcct',title : '用户名',width : 120,sort:true},
+			{type:'numbers',width:50,title:'序号',fixed: 'left'},
+			{field : 'id',title: '#',hide:true,width : 80,fixed: 'left'}, 
+			{field : 'loginAcct',title : '用户名',width : 120,sort:true,fixed: 'left'},
 			{field : 'userName',title : '姓名',width : 120},
 			{field : 'email',title : '电子邮箱',width : 200},
 			{field : 'mobile',title : '手机号',width : 130},
@@ -40,8 +40,7 @@ layui.use(['form','table','eleTree'], function() {
 					}
 				}
 			},
-			{field : 'createTime',title : '创建时间',width :180,sort:true,align:'center'},
-			{fixed: 'right', width:230, align:'center',title:'操作', toolbar: '#tbRowBar',fixed:'right'}
+			{width:230, align:'center',title:'操作', toolbar: '#tbRowBar',fixed:'right'}
 			]],
 		page : true,
 		limit : 20,

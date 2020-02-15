@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>字典管理-列表</title>
+        <title>字典配置项-列表</title>
  		<#include "fsoft-common.ftl" />
     </head>
     <body>
@@ -11,11 +11,12 @@
                     <div class="layui-card">
                         <div class="layui-card-body">
                             <form class="layui-form" action="" lay-filter="fsoftForm">
+                            	<input class="layui-input" type="hidden" id="dictId" name="dictId" value="${model.id}">
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input" type="text" name="code" placeholder="字典编号精确搜索" autocomplete="off">
+                                    <input class="layui-input" type="text" name="code"  placeholder="编码精确搜索"  autocomplete="off">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input" type="text" name="name" placeholder="字典名称模糊搜索" autocomplete="off">
+                                    <input class="layui-input" type="text" name="name"  placeholder="名称模糊搜索"  autocomplete="off">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <button class="layui-btn layui-btn-normal" lay-submit lay-filter="sreach">
@@ -23,8 +24,8 @@
                                     </button>
                                 </div>
                             </form>
-						</div>
-                        <div class="layui-card-body">
+                        </div>
+                        <div class="layui-card-body ">
                         	<div class="layui-btn-group toolbar">
 	                        	<@perms value="sys:dict:save">
 		                        	<button class="layui-btn layui-btn-normal" data-type="add">
@@ -49,8 +50,8 @@
 		                    		</button>
 	                    		</@perms>
                     		</div>
+                            <table id="table" class="layui-table" lay-filter="fsoftItemTable"></table>
                         </div>
-						<table id="table" class="layui-table" lay-filter="tbs"></table>
                     </div>
                 </div>
             </div>
@@ -62,12 +63,9 @@
 	    	contentPath: '${request.contextPath}'
 	    });
 	</script>
-	<script type="text/html" id="sysdict-tbs">
-		<@perms value="sys:dict:setting">
-		  	<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="setting">
-		  		<i class="fa fa-info-circle" aria-hidden="true" ></i> 设置
-	  		</a>
-		</@perms>
+	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/dict/sysitems-list.js?v=202002"></script>
+	<#-- 每一行最后一列的“操作” -->
+	<script type="text/html" id="fsoft-form-tbs">
 		<@perms value="sys:dict:edit">
 		  	<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">
 		  		<i class="fa fa-edit" aria-hidden="true" ></i> 编辑
@@ -80,7 +78,7 @@
 		</@perms>
 	</script>
 	<script type="text/html" id="switchStatus">
-	  	<input type="checkbox" name="status" value="{{d.status}}" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" {{ d.loginAcct == 'admin' ? 'disabled' : '' }} {{ d.status == 1 ? 'checked' : '' }}>
+	  <#-- 这里的 checked 的状态 -->
+	  <input type="checkbox" name="status" value="{{d.status}}" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" {{ d.loginAcct == 'admin' ? 'disabled' : '' }} {{ d.status == 1 ? 'checked' : '' }}>
 	</script>
-	<script type="text/javascript" src="${request.contextPath}/static/fsoft-web/dict/sysdict-list.js?v=201911"></script>
 </html>

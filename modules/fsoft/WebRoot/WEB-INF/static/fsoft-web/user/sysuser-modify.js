@@ -31,6 +31,7 @@ layui.use([ 'form', 'layer' ], function() {
 			    prop:{name:'name',value:'id'},
 			    theme:{color:'#0081ff'},
 			    data: data.data,
+			    clickClose:true,
 			    paging: true,
 			    pageSize:5,
 			    radio:true,

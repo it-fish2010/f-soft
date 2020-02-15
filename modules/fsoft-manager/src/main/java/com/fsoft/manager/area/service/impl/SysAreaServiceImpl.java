@@ -3,18 +3,31 @@ package com.fsoft.manager.area.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fsoft.core.common.QueryParam;
+import com.fsoft.core.common.service.impl.BaseServiceImpl;
+import com.fsoft.core.shiro.ShiroContext;
+import com.fsoft.core.utils.DateTimeUtils;
+import com.fsoft.core.utils.OgnlUtils;
+import com.fsoft.core.utils.UUIDUtils;
+import com.fsoft.core.utils.tree.BuildTree;
+import com.fsoft.core.utils.tree.Tree;
 import com.fsoft.manager.area.entity.SysArea;
 import com.fsoft.manager.area.mapper.SysAreaMapper;
 import com.fsoft.manager.area.service.SysAreaService;
-import com.fsoft.core.common.QueryParam;
-import com.fsoft.core.common.service.impl.BaseServiceImpl;
-import com.fsoft.core.utils.OgnlUtils;
 
+/**
+ * F-Soft 地区服务类
+ * @package com.fsoft.manager.area.service.impl
+ * @author Fish
+ * @email it.fish2010@foxmail.com
+ * @date 2020-02-16
+ * @CopyRight © F-Soft
+ **/
 @Service("areaService")
 @Transactional
 public class SysAreaServiceImpl extends BaseServiceImpl<SysArea> implements SysAreaService {
@@ -22,134 +35,66 @@ public class SysAreaServiceImpl extends BaseServiceImpl<SysArea> implements SysA
 	private SysAreaMapper areaMapper;
 
 	@Override
-	public int save(SysArea area) throws Exception {
-		return areaMapper.insert(area);
-	}
-
-	@Override
-	public int modify(SysArea area) throws Exception {
-		return areaMapper.update(area);
-	}
-
-	/**
-	 * @author chenjiabin
-	 * @Description 根据分类ID中转成分类名称串
-	 * @param
-	 *
-	 */
-	@Override
-	public String getAreaNameStr(String area_id_str) throws Exception {
-		String area_name_str = "";
-		if (StringUtils.isBlank(area_id_str)) {
-			return area_name_str;
+	public List<Tree> findTrees(QueryParam param) throws Exception {
+		List<SysArea> list = findList(param);
+		List<Tree> trees = new ArrayList<Tree>();
+		for (SysArea area : list) {
+			Tree node = new Tree();
+			node.setId(area.getId());
+			node.setCode(area.getCode());
+			node.setTitle(area.getName());
+			node.setParentId(area.getParentId());
+			trees.add(node);
 		}
-		if (area_id_str.indexOf(",") > -1) {
-			String[] menu_id = area_id_str.split(",");
-			for (int i = 0; i < menu_id.length; i++) {
-				area_name_str += getAreaName(menu_id[i]);
-				if (i != menu_id.length - 1) {
-					area_name_str += ",";
-				}
-			}
-		} else {
-			area_name_str += getAreaName(area_id_str);
-		}
-		return area_name_str;
-	}
-
-	/**
-	 * @author chenjiabin
-	 * @Description 根据菜单ID获取菜单名称
-	 * @param
-	 *
-	 */
-	private String getAreaName(String areaId) throws Exception {
-		String areaName = "";
-		SysArea area = getEntity(areaId);
-		areaName = area.getName();
-		return areaName;
+		return BuildTree.buildJsonArray(trees);
 	}
 
 	@Override
-	public int removeBatch(List<String> areaIds) throws Exception {
-		for (String id : areaIds) {
-			remove(id);
-			// 删除下级地区
-			removeChildrens(id);
+	public int submitState(List<String> asList, Integer status) throws Exception {
+		for (String id : asList) {
+			SysArea entity = new SysArea();
+			entity.setId(id);
+			entity.setStatus(status);
+			entity.setModifyTime(DateTimeUtils.getNowTime());
+			entity.setModifyUserId(ShiroContext.getCurrUserId());
+			areaMapper.update(entity);
 		}
 		return 0;
 	}
 
-	/***
-	 * 删除下级
-	 * 
-	 * @param pId
-	 * @throws Exception
-	 */
-	private void removeChildrens(String pId) throws Exception {
-		List<SysArea> areaList = findByParentId(pId);
-		if (OgnlUtils.isEmpty(areaList))
-			return;
-		List<String> ids = new ArrayList<String>();
-		for (SysArea area : areaList) {
-			ids.add(area.getId());
-		}
-		removeBatch(ids);
-	}
-
-	// 禁用或启用
 	@Override
-	public void submitState(List<String> ids, Integer stateValue) throws Exception {
-		for (String id : ids) {
-			SysArea area = getEntity(id);
-			if (OgnlUtils.isEmpty(area))
-				continue;
-			if (area.getStatus().compareTo(stateValue) != 0) {
-				SysArea modifyEntity = new SysArea();
-				modifyEntity.setId(area.getId());
-				modifyEntity.setCode(area.getCode());
-				modifyEntity.setStatus(stateValue);
-				modify(modifyEntity);
-			}
-			// 禁用或启用下级
-			submitStateChildrens(id, stateValue);
-
+	public int save(SysArea param) throws Exception {
+		if (StringUtils.isBlank(param.getId()))
+			param.setId(UUIDUtils.randomUpperCaseId());
+		if (OgnlUtils.isEmpty(param.getCreateTime()))
+			param.setCreateTime(DateTimeUtils.getNowTime());
+		// 维护Parents 字符串
+		if (StringUtils.isBlank(param.getParentId())) {
+			param.setParents(param.getId());
+		} else {
+			SysArea p_area = getEntity(param.getParentId());
+			if (OgnlUtils.isNotEmpty(p_area) && StringUtils.isNotBlank(p_area.getParents()))
+				param.setParents(p_area.getParents() + "_" + param.getId());
 		}
-	}
-
-	/***
-	 * 禁用或启用下级
-	 * 
-	 * @param pId
-	 * @param stateValue
-	 * @throws Exception
-	 */
-	private void submitStateChildrens(String pId, Integer stateValue) throws Exception {
-		List<SysArea> areaList = findByParentId(pId);
-		if (OgnlUtils.isEmpty(areaList))
-			return;
-		List<String> ids = new ArrayList<String>();
-		for (SysArea entity : areaList) {
-			ids.add(entity.getId());
-		}
-		submitState(ids, stateValue);
+		return super.save(param);
 	}
 
 	@Override
-	public List<SysArea> findByParentId(String pId) throws Exception {
-		SysArea areaParam = new SysArea();
-		areaParam.setParentAreaId(pId);
-		QueryParam param = new QueryParam(areaParam);
-		return findList(param);
+	public int modify(SysArea param) throws Exception {
+		if (OgnlUtils.isEmpty(param.getModifyTime()))
+			param.setModifyTime(DateTimeUtils.getNowTime());
+		return super.modify(param);
 	}
 
 	@Override
-	public List<SysArea> findAreaListByIsShow(String parentAreaId, Integer state) throws Exception {
-		SysArea param = new SysArea();
-		param.setParentAreaId(parentAreaId);
-		param.setStatus(state);
-		QueryParam query = new QueryParam(param);
-		return findList(query);
+	public int remove(String rwid) throws Exception {
+		SysArea pm = new SysArea();
+		pm.setParentId(rwid);
+		List<SysArea> list = findList(new QueryParam(pm));
+		if (OgnlUtils.isNotEmpty(list))
+			throw new Exception("请不要删除非末级节点的地区");
+		return super.remove(rwid);
 
 	}
+
 }

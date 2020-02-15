@@ -8,21 +8,20 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 /**
- * 拼音工具类
- * 
+ * F-Soft 拼音工具类
  * @package com.fsoft.core.utils
  * @author Fish
  * @email it.fish2010@foxmail.com
- * @create 2019年3月22日
- * @copyRight ©佳松柏软件 2019-2019
- * 
- */
+ * @date 2020-02-15
+ * @CopyRight © F-Soft
+ **/
 public class PinYinUtils {
 
-	/***
-	 * 
-	 * @author Fish 2019年3月22日
-	 * @param src 汉字转拼音
+	/**
+	 * F-Soft 汉字转成拼音并返回首字母
+	 * @author it_software(it.fish2010@foxmail.com)
+	 * @date 2020-02-15
+	 * @param src
 	 * @return
 	 */
 	public static String getPingYin(String src) {
@@ -52,10 +51,10 @@ public class PinYinUtils {
 		return t4;
 	}
 
-	/***
-	 * 汉字转成拼音并返回首字母
-	 * 
-	 * @author Fish 2019年3月22日
+	/**
+	 * F-Soft 汉字转成拼音并返回首字母
+	 * @author it_software(it.fish2010@foxmail.com)
+	 * @date 2020-02-15
 	 * @param str
 	 * @return
 	 */
