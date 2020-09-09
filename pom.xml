@@ -37,7 +37,7 @@
         <pagehelper.version>4.1.4</pagehelper.version>
         <!-- mysql 驱动版本 -->
         <mysql-version>5.1.38</mysql-version>
-        <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
+        <hibernate-validator-version>5.4.2.Final</hibernate-validator-version>
         <!-- druid版本 -->
         <druid-version>1.0.28</druid-version>
         <commons-lang-version>2.6</commons-lang-version>
