@@ -58,7 +58,7 @@
 
         <!-- SLF4J 版本号 -->
         <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.3</log4j.version>
+        <log4j.version>2.15.0</log4j.version>
         <!-- jedis版本号 -->
         <jedis.version>2.9.0</jedis.version>
         <!-- spring-data-redis 版本号 -->
