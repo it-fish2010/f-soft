@@ -36,7 +36,7 @@
         <!-- MyBatis分页插件 版本 -->
         <pagehelper.version>4.1.4</pagehelper.version>
         <!-- mysql 驱动版本 -->
-        <mysql-version>5.1.38</mysql-version>
+        <mysql-version>8.0.28</mysql-version>
         <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
         <!-- druid版本 -->
         <druid-version>1.0.28</druid-version>
