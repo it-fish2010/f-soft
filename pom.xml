@@ -64,7 +64,7 @@
         <!-- spring-data-redis 版本号 -->
         <spring-data-redis.version>1.7.1.RELEASE</spring-data-redis.version>
         <jackson-core.version>2.9.0</jackson-core.version>
-        <jackson-databind.version>2.9.0</jackson-databind.version>
+        <jackson-databind.version>2.12.7.1</jackson-databind.version>
         <jackson-annotations.version>2.9.0</jackson-annotations.version>
         <!-- jexcelapi-jxl 版本 -->
         <jexcelapi-jxl.version>2.6.12</jexcelapi-jxl.version>
